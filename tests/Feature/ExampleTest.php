@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use \Rollbar\Rollbar;
-use \Rollbar\Payload\Level;
 
 class ExampleTest extends TestCase
 {
