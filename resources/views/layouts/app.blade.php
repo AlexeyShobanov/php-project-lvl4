@@ -27,7 +27,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        <a class="nav-link {{ (request()->is('task_statuses')) ? 'active' : '' }}" href="/task_statuses">Task Statuses</a>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -68,6 +68,9 @@
     </header>
 
     <main class="py-4">
+        <div class="container">
+            @include('flash::message')
+        </div>
         @yield('content')
     </main>
     

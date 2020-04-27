@@ -4,13 +4,21 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
     public function run()
     {
-        // $this->call(UserSeeder::class);
+        $this->call('TaskStatusSeeder');
+    }
+}
+
+class TaskStatusSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('task_statuses')->insert([
+            ['name' => 'New'],
+            ['name' => 'Underway'],
+            ['name' => 'Tested'],
+            ['name' => 'Complited']
+        ]);
     }
 }
