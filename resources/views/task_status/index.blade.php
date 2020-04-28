@@ -8,18 +8,18 @@
             @if (Auth::user())
 
                 {{ Form::open(['url' => route('task_statuses.create'), 'method' => 'GET']) }}
-                    {{ Form::submit('Add New', ['class' => 'btn btn-primary text-uppercase']) }}
+                    {{ Form::submit(__('messages.addNew'), ['class' => 'btn btn-primary text-uppercase']) }}
                 {{ Form::close() }}
 
             @endif
 
             <table class="table mt-2">
                 <tr>
-                    <th class='text-center'>ID</th>
-                    <th>Name</th>
-                    <th class='text-center'>Created At</th>
+                    <th class='text-center'>{{__('messages.id')}}</th>
+                    <th>{{__('messages.name')}}</th>
+                    <th class='text-center'>{{__('messages.createdAt')}}</th>
                     @if (Auth::user())
-                        <th class='text-center'>Actions</th>
+                        <th class='text-center'>{{__('messages.actions')}}</th>
                     @endif
                 </tr>
                 @foreach($statuses as $status)
@@ -31,13 +31,13 @@
                             <td class='text-center'>
                                 <div class="d-inline-block">
                                     {{ Form::open(['url' => route('task_statuses.edit', $status->id), 'method' => 'GET']) }}
-                                        {{ Form::submit('Edit', ['class' => 'btn btn-sm btn-secondary']) }}
+                                        {{ Form::submit(__('messages.edit'), ['class' => 'btn btn-sm btn-secondary']) }}
                                     {{ Form::close() }}
                                 </div>
                            
                                 <div class="d-inline-block">
                                     {{ Form::open(['url' => route('task_statuses.destroy', $status->id), 'method' => 'DELETE']) }}
-                                        {{ Form::submit('Delete', ['class' => 'btn btn-sm btn-secondary', 'data-confirm' => "Are you sure?", 'rel' => "nofollow"]) }}
+                                        {{ Form::submit(__('messages.delete'), ['class' => 'btn btn-sm btn-secondary', 'data-confirm' => "Are you sure?", 'rel' => "nofollow"]) }}
                                     {{ Form::close() }}
                                 </div>
                         @endif

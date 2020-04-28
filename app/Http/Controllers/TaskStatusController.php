@@ -33,7 +33,7 @@ class TaskStatusController extends Controller
             'name' => 'required|string|max:255'
         ]);
         if ($validator->fails()) {
-            flash('Not a valid name')->error();
+            flash(__('messages.notValidName'))->error();
             return redirect()
             ->route('task_statuses.create');
         }
@@ -41,14 +41,14 @@ class TaskStatusController extends Controller
         
         $existingStatus = TaskStatus::where('name', $status)->first();
         if ($existingStatus) {
-            flash('Status already added')->warning();
+            flash(__('messages.taskStatusAlreadyAdded'))->warning();
             return redirect()
             ->route('task_statuses.index');
         }
 
         TaskStatus::create(['name' => $status]);
 
-        flash('Url added successfully')->success();
+        flash(__('messages.taskStatusAddedSuccessfully'))->success();
 
         return redirect()
             ->route('task_statuses.index');
@@ -71,7 +71,7 @@ class TaskStatusController extends Controller
             'name' => 'required|string|max:255'
         ]);
         if ($validator->fails()) {
-            flash('Not a valid name')->error();
+            flash(__('messages.notValidName'))->error();
             return redirect()
             ->route('task_statuses.edit', ['status' => request()->name]);
         }
@@ -79,14 +79,14 @@ class TaskStatusController extends Controller
         
         $existingStatusName = TaskStatus::where('name', $statusName)->first();
         if ($existingStatusName) {
-            flash('Status already added')->warning();
+            flash(__('messages.taskStatusAlreadyExist'))->warning();
             return redirect()
             ->route('task_statuses.index');
         }
 
         $status->name = $statusName;
         $status->save();
-        flash('Url added successfully')->success();
+        flash(__('messages.taskStatusUpdatedSuccessfully'))->success();
 
         return redirect()
             ->route('task_statuses.index');

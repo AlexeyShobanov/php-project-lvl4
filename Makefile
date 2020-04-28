@@ -5,6 +5,7 @@ setup:
 	cp .env .env.testing
 	touch database/database.sqlite || true
 	php artisan migrate
+	php artisan db:seed --force
 
 serve:
 	php artisan serve
