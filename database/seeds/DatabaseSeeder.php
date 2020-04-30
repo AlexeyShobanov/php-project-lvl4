@@ -15,10 +15,10 @@ class TaskStatusSeeder extends Seeder {
     public function run()
     {
         DB::table('task_statuses')->insert([
-            ['name' => 'New'],
-            ['name' => 'Underway'],
-            ['name' => 'Tested'],
-            ['name' => 'Complited']
+            ['name' => __('messages.new')],
+            ['name' => __('messages.underway')],
+            ['name' => __('messages.tested')],
+            ['name' => __('messages.complited')]
         ]);
     }
 }

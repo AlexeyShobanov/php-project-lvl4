@@ -20,5 +20,14 @@ return [
     'notValidName' => 'Not a valid name',
     'taskStatusAddedSuccessfully' => 'Task Status added successfully',
     'taskStatusAlreadyExist' => 'Task Status already exist',
-    'taskStatusUpdatedSuccessfully' => 'Task Status updated successfully'
+    'taskStatusUpdatedSuccessfully' => 'Task Status updated successfully',
+    'new' => 'New',
+    'underway' => 'Underway',
+    'tested' => 'Tested',
+    'complited' => 'Complited',
+    'task' => 'Task',
+    'status' => 'Status',
+    'creator' => 'Creator',
+    'assignee' => 'Assignee',
+    'addNewTask' => 'Add New Task'
 ];
