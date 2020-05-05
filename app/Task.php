@@ -25,4 +25,8 @@ class Task extends Model
         return $this->belongsTo(__NAMESPACE__ . '\User');
     }
 
+    public function label()
+    {
+        return $this->belongsTo(__NAMESPACE__ . '\Label');
+    }
 }

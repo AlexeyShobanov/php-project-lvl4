@@ -2,38 +2,50 @@
 
 namespace App\Policies;
 
-use App\Task;
+use App\Label;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TaskPolicy
+class LabelPolicy
 {
     use HandlesAuthorization;
 
-    
+    /**
+     * Determine whether the user can view any models.
+     *
+     * @param  \App\User  $user
+     * @return mixed
+     */
     public function viewAny(User $user)
     {
         //
     }
 
-    
-    public function view(User $user, Task $task)
+    /**
+     * Determine whether the user can view the model.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Label  $label
+     * @return mixed
+     */
+    public function view(User $user, Label $label)
     {
         //
     }
 
-    
+   
     public function create(User $user)
     {
         return true;
     }
 
-    public function update(User $user, Task $task)
+    
+    public function update(User $user, Label $label)
     {
         return true;
     }
 
-    public function edit(User $user, Task $task)
+    public function edit(User $user, TaskStatus $taskStatus)
     {
         return true;
     }
@@ -42,22 +54,22 @@ class TaskPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Task  $task
+     * @param  \App\Label  $label
      * @return mixed
      */
-    public function delete(User $user, Task $task)
+    public function delete(User $user, Label $label)
     {
-        return $user->id == $task->created_by_id;
+        //
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Task  $task
+     * @param  \App\Label  $label
      * @return mixed
      */
-    public function restore(User $user, Task $task)
+    public function restore(User $user, Label $label)
     {
         //
     }
@@ -66,10 +78,10 @@ class TaskPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Task  $task
+     * @param  \App\Label  $label
      * @return mixed
      */
-    public function forceDelete(User $user, Task $task)
+    public function forceDelete(User $user, Label $label)
     {
         //
     }

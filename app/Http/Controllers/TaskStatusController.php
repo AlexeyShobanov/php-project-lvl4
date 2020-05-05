@@ -19,24 +19,25 @@ class TaskStatusController extends Controller
     
     public function create()
     {
-        //$taskStatus = new TaskStatus();
-        //return view('task_status.create', compact('status'));
-        
         $this->authorize('create', TaskStatus::class);
-
         return view('task_status.create');
     }
 
     public function store(Request $request)
     {
+        $this->authorize('create', TaskStatus::class);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255'
-        ]);
+        ], self::MESSAGES);
+        
         if ($validator->fails()) {
-            flash(__('messages.notValidName'))->error();
+            flash(__('messages.incorrectDataEntered'))->error();
             return redirect()
-            ->route('task_statuses.create');
+                ->route('task_statuses.create')
+                ->withErrors($validator)
+                ->withInput();
         }
+        
         $status = $validator->valid()['name'];
         
         $existingStatus = TaskStatus::where('name', $status)->first();
@@ -69,12 +70,16 @@ class TaskStatusController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255'
-        ]);
+        ], self::MESSAGES);
+
         if ($validator->fails()) {
-            flash(__('messages.notValidName'))->error();
+            flash(__('messages.incorrectDataEntered'))->error();
             return redirect()
-            ->route('task_statuses.edit', ['status' => request()->name]);
+                ->route('task_statuses.edit', ['status' => request()->name])
+                ->withErrors($validator)
+                ->withInput();
         }
+
         $statusName = $validator->valid()['name'];
         
         $existingStatusName = TaskStatus::where('name', $statusName)->first();
@@ -96,7 +101,7 @@ class TaskStatusController extends Controller
     public function destroy(TaskStatus $taskStatus)
     {
         $this->authorize('delete', $taskStatus);
-        $status = TaskStatus::find($taskStatus->id);
+        $status = TaskStatus::findOrFail($taskStatus->id);
         if ($status) {
             $status->delete();
         }

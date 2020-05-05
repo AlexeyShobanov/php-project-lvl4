@@ -8,8 +8,5 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 abstract class TestCase extends BaseTestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
-
     use CreatesApplication;
 }

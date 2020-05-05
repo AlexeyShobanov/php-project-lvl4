@@ -12,4 +12,10 @@ class Controller extends BaseController
     use AuthorizesRequests;
     use DispatchesJobs;
     use ValidatesRequests;
+
+    protected const MESSAGES = [
+            'required' => "The :attribute field is required!",
+            'string' => "The :attribute must be string!",
+            'max' => "The :attribute exceeds the maximum number of characters equal to :max!",
+        ];
 }
