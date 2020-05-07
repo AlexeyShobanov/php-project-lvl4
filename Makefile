@@ -1,8 +1,11 @@
 setup:
 	composer install
 	cp -n .env.example .env
+	cp -n .env.example .env.testing
+	sed -i 's/DB_CONNECTION=sqlite/DB_CONNECTION=sqlite\nDB_DATABASE=./database/db_for_testing.sqlite/'
 	php artisan key:gen --ansi
 	touch database/database.sqlite || true
+	touch database/db_for_testing.sqlite || true
 	php artisan migrate
 	php artisan db:seed --force
 
