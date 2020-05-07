@@ -28,6 +28,11 @@ class TaskPolicy
         return true;
     }
 
+    public function store(User $user)
+    {
+        return true;
+    }
+
     public function update(User $user, Task $task)
     {
         return true;

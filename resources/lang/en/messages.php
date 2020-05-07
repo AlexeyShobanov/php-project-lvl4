@@ -57,5 +57,7 @@ return [
     'labelAddedSuccessfully' => 'Label added successfully',
     'labelUpdatedSuccessfully' => 'Label updated successfully',
     'addNewLabel' => 'Add New Label',
+    'editLabel' => 'Edit Label',
+    'label' => 'Label',
     
 ];

@@ -25,7 +25,7 @@ class TaskStatusController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('create', TaskStatus::class);
+        $this->authorize('store', TaskStatus::class);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255'
         ], self::MESSAGES);
@@ -81,13 +81,6 @@ class TaskStatusController extends Controller
         }
 
         $statusName = $validator->valid()['name'];
-        
-        $existingStatusName = TaskStatus::where('name', $statusName)->first();
-        if ($existingStatusName) {
-            flash(__('messages.taskStatusAlreadyExist'))->warning();
-            return redirect()
-            ->route('task_statuses.index');
-        }
 
         $status->name = $statusName;
         $status->save();

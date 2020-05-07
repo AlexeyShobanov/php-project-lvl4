@@ -3,38 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Label;
+use App\Color;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class LabelController extends Controller
 {
-    public const COLORS = [
-        '0' => 'red',
-        '1' => 'blue',
-        '2' => 'green',
-        '3' => 'turquoise',
-        '4' => 'grey',
-        '5' => 'black',
-        '6' => 'yellow',
-        '7' => 'white'
-    ];
-
     public function index()
     {
-        $labels = Label::all();
+        $labels = \DB::table('labels')
+        ->leftJoin('colors', 'colors.id', '=', 'labels.color_id')
+        ->select(
+            'labels.*',
+            'colors.name as color_name'
+        )
+        ->get();
         return view('label.index', compact('labels'));
     }
 
     public function create()
     {
         $this->authorize('create', Label::class);
-
-        return view('label.create', ['colors' => self::COLORS]);
+        $colors = Color::select('id', 'name')->get()->pluck('name', 'id')->all();
+        return view('label.create', compact('colors'));
     }
 
     public function store(Request $request)
     {
-        $this->authorize('create', Label::class);
+        $this->authorize('store', Label::class);
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255'
         ], self::MESSAGES);
@@ -56,8 +53,10 @@ class LabelController extends Controller
             ->route('labels.index');
         }
 
-        if (!$label['color']) {
-            $label['color'] = self::COLORS[rand(0, count(self::COLORS) - 1)];
+        if (is_null($label['color_id'])) {
+            $randomColor = Color::all()
+                ->random();
+            $label['color_id'] = $randomColor->id;
         }
 
         Label::create($label);
@@ -72,16 +71,14 @@ class LabelController extends Controller
     public function edit(Label $label)
     {
         $this->authorize('edit', $label);
-        $label = Label::findOrFail($label->id);
-        return view('label.edit', compact('label'));
+        $colors = Color::select('id', 'name')->get()->pluck('name', 'id')->all();
+        return view('label.edit', compact('colors', 'label'));
     }
 
     
     public function update(Request $request, Label $label)
     {
         $this->authorize('update', $label);
-
-        $label = Label::findOrFail($label->id);
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255'
@@ -96,14 +93,6 @@ class LabelController extends Controller
         }
 
         $data = $validator->valid();
-        
-        $existingStatusName = Label::where('name', $data['name'])->first();
-        if ($existingStatusName) {
-            flash(__('messages.labelAlreadyExist'))->warning();
-            return redirect()
-            ->route('labels.index');
-        }
-
         $label->fill($data)
             ->save();
         
@@ -116,10 +105,9 @@ class LabelController extends Controller
     public function destroy(Label $label)
     {
         $this->authorize('delete', $label);
-        $label = Label::findOrFail($label->id);
         if ($label) {
             $label->delete();
         }
-        return redirect()->route('task_statuses.index');
+        return redirect()->route('labels.index');
     }
 }

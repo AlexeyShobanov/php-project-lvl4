@@ -28,7 +28,16 @@
                 @foreach($tasks as $task)
                     <tr>
                         <td>{{ $task->id }}</td>
-                        <td>{{ $task->name}}</td>
+                        <td>
+                            <div class="d-inline-block">
+                            {{ $task->name}}
+                            </div>
+                            <div class="d-inline-block">
+                                {{ Form::open(['url' => route('tasks.edit', $task->id), 'method' => 'GET']) }}
+                                    {{ Form::submit($task->label_name, ['class' => 'btn btn-sm btn-' . $task->label_style]) }}
+                                {{ Form::close() }}
+                            </div>
+                        </td>
                         <td>{{ $task->status_name }}</td>
                         <td>{{ $task->created_by_name}}</td>
                         <td>{{ $task->assigned_to_name ?? ''}}</td>
@@ -37,12 +46,12 @@
                             <td class='text-center'>
                                 <div class="d-inline-block">
                                     {{ Form::open(['url' => route('tasks.edit', $task->id), 'method' => 'GET']) }}
-                                        {{ Form::submit(__('messages.edit'), ['class' => 'btn btn-sm btn-secondary']) }}
+                                        {{ Form::submit(__('messages.edit'), ['class' => 'btn btn-sm btn-outline-secondary']) }}
                                     {{ Form::close() }}
                                 </div>
                                 <div class="d-inline-block">
                                     {{ Form::open(['url' => route('tasks.destroy', $task->id), 'method' => 'DELETE']) }}
-                                        {{ Form::submit(__('messages.delete'), ['class' => 'btn btn-sm btn-secondary', 'data-confirm' => __('messages.areYouSure'), 'rel' => "nofollow"]) }}
+                                        {{ Form::submit(__('messages.delete'), ['class' => 'btn btn-sm btn-outline-secondary', 'data-confirm' => __('messages.areYouSure'), 'rel' => "nofollow"]) }}
                                     {{ Form::close() }}
                                 </div>
                         

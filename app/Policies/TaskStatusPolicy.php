@@ -16,6 +16,11 @@ class TaskStatusPolicy
         return true;
     }
 
+    public function store(User $user)
+    {
+        return true;
+    }
+
     public function update(User $user, TaskStatus $taskStatus)
     {
         return true;

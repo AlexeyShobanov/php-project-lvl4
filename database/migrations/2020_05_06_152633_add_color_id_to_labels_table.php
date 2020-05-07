@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColorAndDescriptionToLabelsTable extends Migration
+class AddColorIdToLabelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,8 @@ class AddColorAndDescriptionToLabelsTable extends Migration
     public function up()
     {
         Schema::table('labels', function (Blueprint $table) {
-            $table->text('description')->nullable();
-            $table->string('color')->nullable();
+            $table->bigInteger('color_id')->nullable();
+            $table->foreign('color_id')->references('id')->on('colors');
         });
     }
 
@@ -27,8 +27,7 @@ class AddColorAndDescriptionToLabelsTable extends Migration
     public function down()
     {
         Schema::table('labels', function (Blueprint $table) {
-            $table->dropColumn('description');
-            $table->dropColumn('color');
+            $table->dropColumn('color_id');
         });
     }
 }

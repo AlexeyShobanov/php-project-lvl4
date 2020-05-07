@@ -27,8 +27,8 @@
                     <tr>
                         <td>{{ $label->name }}</td>
                         <td>{{ $label->description }}</td>
-                        <td>{{ $label->color }}</td>
-                        <td>{{ $status->created_at ?? ''}} </td>
+                        <td>{{ $label->color_name }}</td>
+                        <td>{{ $label->created_at ?? ''}} </td>
                         @if (Auth::user())
                             <td class='text-center'>
                                 <div class="d-inline-block">

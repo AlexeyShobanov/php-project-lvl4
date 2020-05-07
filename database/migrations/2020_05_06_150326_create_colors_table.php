@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class FixDescriptionToTextToTasksTable extends Migration
+class CreateColorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class FixDescriptionToTextToTasksTable extends Migration
      */
     public function up()
     {
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->text('description')->nullable()->change();
+        Schema::create('colors', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('btn_style');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class FixDescriptionToTextToTasksTable extends Migration
      */
     public function down()
     {
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->string('description')->nullable()->change();
-        });
+        Schema::dropIfExists('colors');
     }
 }

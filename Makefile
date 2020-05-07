@@ -16,7 +16,8 @@ console:
 	php artisan tinker
 
 test:
-	php artisan test
+	php artisan config:clear 
+	php artisan test --env=testing
 
 coverage:
 	./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml

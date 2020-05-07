@@ -16,6 +16,10 @@
                             @enderror
                     </div>
                     <div class="form-group">
+                        <label for="label">{{__('messages.label')}}</label>
+                        {{ Form::select('label_id', $labels, $task->label_id, ['placeholder' => __('messages.label'), 'class' => 'form-control form-control-lg']) }}
+                    </div>
+                    <div class="form-group">
                         <label for="description">{{__('messages.description')}}</label>
                         {{ Form::textarea('description', $task->description ?? '', ['class' => 'form-control form-control-lg']) }}
                     </div>

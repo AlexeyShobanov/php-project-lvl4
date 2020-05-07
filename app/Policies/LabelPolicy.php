@@ -39,13 +39,17 @@ class LabelPolicy
         return true;
     }
 
-    
+    public function store(User $user)
+    {
+        return true;
+    }
+
     public function update(User $user, Label $label)
     {
         return true;
     }
 
-    public function edit(User $user, TaskStatus $taskStatus)
+    public function edit(User $user, Label $label)
     {
         return true;
     }
@@ -59,7 +63,7 @@ class LabelPolicy
      */
     public function delete(User $user, Label $label)
     {
-        //
+        return true;
     }
 
     /**

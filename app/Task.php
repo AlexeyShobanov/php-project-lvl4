@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     protected $fillable = [
-        'name', 'description', 'status_id', 'created_by_id', 'assigned_to_id'
+        'name', 'description', 'status_id', 'created_by_id', 'assigned_to_id', 'label_id'
     ];
 
     public function status()
@@ -15,14 +15,14 @@ class Task extends Model
         return $this->belongsTo(__NAMESPACE__ . '\TaskStatus');
     }
 
-    public function created_by()
+    public function createdBy()
     {
-        return $this->belongsTo(__NAMESPACE__ . '\User');
+        return $this->belongsTo(__NAMESPACE__ . '\User', 'created_by_id');
     }
 
-    public function assigned_to()
+    public function assignedTo()
     {
-        return $this->belongsTo(__NAMESPACE__ . '\User');
+        return $this->belongsTo(__NAMESPACE__ . '\User', 'assigned_to_id');
     }
 
     public function label()
