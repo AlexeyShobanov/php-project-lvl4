@@ -59,5 +59,7 @@ return [
     'addNewLabel' => 'Add New Label',
     'editLabel' => 'Edit Label',
     'label' => 'Label',
+    'apply' => 'Apply',
+    'clear' => 'Clear'
     
 ];

@@ -6,11 +6,7 @@
         <div class="table-responsive">
 
             @if (Auth::user())
-
-                {{ Form::open(['url' => route('labels.create'), 'method' => 'GET']) }}
-                    {{ Form::submit(__('messages.addNew'), ['class' => 'btn btn-primary text-uppercase']) }}
-                {{ Form::close() }}
-
+                <a class="btn btn-primary text-uppercase" href="{{ route('labels.create') }}">{{__('messages.addNew')}}</a>
             @endif
 
             <table class="table mt-2">

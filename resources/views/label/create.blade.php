@@ -20,7 +20,7 @@
                     {{ Form::textarea('description', request()->description, ['class' => 'form-control form-control-lg']) }}
                 </div>
                 <div class="form-group">
-                    <label for="color">{{__('messages.color')}}</label>
+                    <label for="color_id">{{__('messages.color')}}</label>
                     {{ Form::select('color_id', $colors, null, ['placeholder' => __('messages.color'), 'class' => 'form-control form-control-lg']) }}
                 </div>
                 <div class="form-group">

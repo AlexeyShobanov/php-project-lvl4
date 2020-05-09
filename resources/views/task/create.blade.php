@@ -17,7 +17,7 @@
                             @enderror
                     </div>
                     <div class="form-group">
-                        <label for="label">{{__('messages.label')}}</label>
+                        <label for="label_id">{{__('messages.label')}}</label>
                         {{ Form::select('label_id', $labels, null, ['placeholder' => __('messages.label'), 'class' => 'form-control form-control-lg']) }}
                     </div>
                     <div class="form-group">
@@ -25,7 +25,7 @@
                         {{ Form::textarea('description', request()->description, ['class' => 'form-control form-control-lg']) }}
                     </div>
                     <div class="form-group">
-                        <label for="status">{{__('messages.status')}}</label>
+                        <label for="status_id">{{__('messages.status')}}</label>
                         {{ Form::select('status_id', $statuses, null, ['placeholder' => __('messages.status'), 'class' => 'form-control form-control-lg' . ($errors->has('status_id') ? ' is-invalid' : '')]) }}
                         @error('status_id')
                             <span class="invalid-feedback" role="alert">
@@ -34,7 +34,7 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="assignee">{{__('messages.assignee')}}</label>
+                        <label for="assigned_to_id">{{__('messages.assignee')}}</label>
                         {{ Form::select('assigned_to_id', $users, null, ['placeholder' => __('messages.assignee'), 'class' => 'form-control form-control-lg']) }}
                     </div>
                     <div class="form-group">

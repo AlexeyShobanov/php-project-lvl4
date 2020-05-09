@@ -14,14 +14,29 @@ use Auth;
 
 class TaskController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $data = $request->all();
+        $filter = $data['filter'] ?? [];
+        $statuses = TaskStatus::select('id', 'name')->get()->pluck('name', 'id')->all();
+        $users = User::select('id', 'name')->get()->pluck('name', 'id')->all();
         $tasks = \DB::table('tasks')
         ->join('users as u1', 'u1.id', '=', 'tasks.created_by_id')
         ->join('task_statuses', 'task_statuses.id', '=', 'tasks.status_id')
         ->leftJoin('users as u2', 'u2.id', '=', 'tasks.assigned_to_id')
         ->leftJoin('labels', 'labels.id', '=', 'tasks.label_id')
         ->leftJoin('colors', 'colors.id', '=', 'labels.color_id')
+        ->when($filter, function ($tasks) use ($filter) {
+            return $tasks->when($filter['created_by_id'], function ($tasks) use ($filter) {
+                return $tasks->where('tasks.created_by_id', $filter['created_by_id']);
+            })
+            ->when($filter['assigned_to_id'], function ($tasks) use ($filter) {
+                return $tasks->where('tasks.assigned_to_id', $filter['assigned_to_id']);
+            })
+            ->when($filter['status_id'], function ($tasks) use ($filter) {
+                return $tasks->where('tasks.status_id', $filter['status_id']);
+            });
+        })
         ->select(
             'tasks.*',
             'u1.name as created_by_name',
@@ -31,7 +46,8 @@ class TaskController extends Controller
             'colors.btn_style as label_style'
         )
         ->get();
-        return view('task.index', compact('tasks'));
+
+        return view('task.index', compact('tasks', 'statuses', 'users', 'filter'));
     }
 
     public function create()
