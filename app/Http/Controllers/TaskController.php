@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Auth;
+use Carbon\Carbon;
 
 class TaskController extends Controller
 {
@@ -18,6 +19,17 @@ class TaskController extends Controller
     {
         $data = $request->all();
         $filter = $data['filter'] ?? [];
+        $labelFilter = $data['label'] ?? null;
+        $filterStatusBar = '';
+        if ($filter) {
+            $filterStatusBar = '&' . implode(
+                '&',
+                array_map(function ($filterKey) use ($filter) {
+                    return "filter%5B{$filterKey}%5D={$filter[$filterKey]}";
+                },
+                array_keys($filter))
+            );
+        }
         $statuses = TaskStatus::select('id', 'name')->get()->pluck('name', 'id')->all();
         $users = User::select('id', 'name')->get()->pluck('name', 'id')->all();
         $tasks = \DB::table('tasks')
@@ -26,7 +38,7 @@ class TaskController extends Controller
         ->leftJoin('users as u2', 'u2.id', '=', 'tasks.assigned_to_id')
         ->leftJoin('labels', 'labels.id', '=', 'tasks.label_id')
         ->leftJoin('colors', 'colors.id', '=', 'labels.color_id')
-        ->when($filter, function ($tasks) use ($filter) {
+        ->when($filter, function ($tasks) use ($filter, $labelFilter) {
             return $tasks->when($filter['created_by_id'], function ($tasks) use ($filter) {
                 return $tasks->where('tasks.created_by_id', $filter['created_by_id']);
             })
@@ -36,6 +48,9 @@ class TaskController extends Controller
             ->when($filter['status_id'], function ($tasks) use ($filter) {
                 return $tasks->where('tasks.status_id', $filter['status_id']);
             });
+        })
+        ->when($labelFilter, function ($tasks) use ($labelFilter) {
+            return $tasks->where('tasks.label_id', $labelFilter);
         })
         ->select(
             'tasks.*',
@@ -47,7 +62,7 @@ class TaskController extends Controller
         )
         ->get();
 
-        return view('task.index', compact('tasks', 'statuses', 'users', 'filter'));
+        return view('task.index', compact('tasks', 'statuses', 'users', 'filter', 'filterStatusBar', 'labelFilter'));
     }
 
     public function create()

@@ -17,6 +17,7 @@ class LabelController extends Controller
             'labels.*',
             'colors.name as color_name'
         )
+        ->whereNull('labels.deleted_at')
         ->get();
         return view('label.index', compact('labels'));
     }

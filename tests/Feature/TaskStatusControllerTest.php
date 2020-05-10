@@ -75,7 +75,10 @@ class TaskStatusControllerTest extends TestCase
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
-        $this->assertDatabaseMissing('task_statuses', ['id' => $status->id]);
+        $this->assertSoftDeleted('task_statuses', [
+            'id' => $status->id,
+            'name' => $status->name,
+        ]);
     }
 
     protected function tearDown(): void

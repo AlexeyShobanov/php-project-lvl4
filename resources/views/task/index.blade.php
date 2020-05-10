@@ -10,6 +10,7 @@
                         {{ Form::select("filter[created_by_id]", $users, $filter['created_by_id'] ?? null, ['placeholder' => __('messages.creator'), 'class' => 'form-control mr-2', 'style' => 'width: 150px;']) }}
                         {{ Form::select("filter[assigned_to_id]", $users, $filter['assigned_to_id'] ?? null, ['placeholder' => __('messages.assignee'), 'class' => 'form-control mr-2', 'style' => 'width: 150px;']) }}
                         {{ Form::select("filter[status_id]", $statuses, $filter['status_id'] ?? null, ['placeholder' => __('messages.status'), 'class' => 'form-control mr-2', 'style' => 'width: 150px;']) }}
+                        {{ Form::hidden("label", $labelFilter) }}
                         {{ Form::submit(__('messages.apply'), ['class' => 'btn btn-outline-primary text-uppercase mr-2']) }}
                         <a class="btn btn-outline-primary text-uppercase mr-2" href="{{ route('tasks.index') }}">{{__('messages.clear')}}</a>
                     {{ Form::close() }}
@@ -41,7 +42,7 @@
                             {{ $task->name}}
                             </div>
                             <div class="d-inline-block">
-                                <a class="btn btn-sm btn-{{ $task->label_style }}" href="{{ route('tasks.index') }}?label={{ $task->label_id }}+filter={{$filter}}"> {{ $task->label_name }} </a>   
+                                <a class="btn btn-sm btn-{{ $task->label_style }}" href="{{ route('tasks.index') }}?label={{ $task->label_id }}{{ $filterStatusBar }}"> {{ $task->label_name }} </a>   
                             </div>
                         </td>
                         <td>{{ $task->status_name }}</td>

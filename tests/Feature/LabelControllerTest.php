@@ -8,6 +8,7 @@ use App\Label;
 use App\Color;
 use App\User;
 use LabelSeeder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LabelControllerTest extends TestCase
 {
@@ -76,7 +77,10 @@ class LabelControllerTest extends TestCase
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
-        $this->assertDatabaseMissing('labels', ['id' => $label->id]);
+        $this->assertSoftDeleted('labels', [
+            'id' => $label->id,
+            'name' => $label->name,
+        ]);
     }
 
     protected function tearDown(): void
