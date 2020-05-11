@@ -106,9 +106,7 @@ class LabelController extends Controller
     public function destroy(Label $label)
     {
         $this->authorize('delete', $label);
-        if ($label) {
-            $label->delete();
-        }
+        $label->delete();
         return redirect()->route('labels.index');
     }
 }

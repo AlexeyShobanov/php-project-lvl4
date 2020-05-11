@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Auth;
-use Carbon\Carbon;
 
 class TaskController extends Controller
 {
@@ -104,15 +103,18 @@ class TaskController extends Controller
             ->route('tasks.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
     public function show(Task $task)
     {
-        //
+        $comments = \DB::table('comments')
+        ->where('comments.task_id', $task->id)
+        ->join('users', 'users.id', '=', 'comments.created_by_id')
+        ->join('tasks', 'tasks.id', '=', 'comments.task_id')
+        ->select(
+            'comments.*',
+            'users.name as created_by_name'
+        )
+        ->get();
+        return view('task.show', compact('task', 'comments'));
     }
 
     public function edit(Task $task)
@@ -153,9 +155,7 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         $this->authorize('delete', $task);
-        if ($task) {
-            $task->delete();
-        }
+        $task->delete();
         return redirect()
             ->route('tasks.index');
     }

@@ -65,7 +65,6 @@ class TaskStatusController extends Controller
     public function update(Request $request, TaskStatus $taskStatus)
     {
         $this->authorize('update', $taskStatus);
-
         $status = TaskStatus::findOrFail($taskStatus->id);
 
         $validator = Validator::make($request->all(), [
@@ -95,9 +94,7 @@ class TaskStatusController extends Controller
     {
         $this->authorize('delete', $taskStatus);
         $status = TaskStatus::findOrFail($taskStatus->id);
-        if ($status) {
-            $status->delete();
-        }
+        $status->delete();
         return redirect()->route('task_statuses.index');
     }
 }

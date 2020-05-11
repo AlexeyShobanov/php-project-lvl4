@@ -15,7 +15,7 @@
                         </span>
                     @enderror
                 </div>
-                {{ Form::submit(__('messages.create'), ['class' => 'btn btn-lg btn-primary px-5 text-uppercase']) }}
+                {{ Form::submit(__('messages.create'), ['class' => 'btn btn-primary px-5 text-uppercase']) }}
                 {{ Form::close() }}
             </div>
         </div>

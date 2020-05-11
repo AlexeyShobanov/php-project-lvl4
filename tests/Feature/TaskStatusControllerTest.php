@@ -19,7 +19,6 @@ class TaskStatusControllerTest extends TestCase
         $this->seed(TaskStatusSeeder::class);
         
         $user = factory(User::class)->create();
-
         $response = $this->actingAs($user)
                          ->withSession(['foo' => 'bar'])
                          ->get('/');

@@ -30,3 +30,5 @@ Route::resource('/task_statuses', 'TaskStatusController');
 Route::resource('/tasks', 'TaskController');
 
 Route::resource('/labels', 'LabelController');
+
+Route::resource('/tasks.comments', 'CommentController');

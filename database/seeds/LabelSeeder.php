@@ -40,7 +40,7 @@ class LabelSeeder extends Seeder
             [
                 'name' => 'question',
                 'description' => 'Indicates that an issue or pull request needs more information',
-                'color_id' => 2,
+                'color_id' => 8,
             ],
             [
                 'name' => 'wontfix',

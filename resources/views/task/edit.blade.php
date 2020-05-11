@@ -37,7 +37,7 @@
                         {{ Form::select('assigned_to_id', $users, $task->assigned_to_id, ['placeholder' => __('messages.assignee'), 'class' => 'form-control form-control-lg']) }}
                     </div>
                     <div class="form-group">
-                        {{ Form::submit(__('messages.update'), ['class' => 'btn btn-lg btn-primary px-5 text-uppercase']) }}
+                        {{ Form::submit(__('messages.update'), ['class' => 'btn btn-primary px-5 text-uppercase']) }}
                     </div>       
                 {{ Form::close() }}
                 </div>

@@ -9,7 +9,7 @@
                         <label for="name">{{__('messages.name')}}</label>
                             {{ Form::model($status, ['url' => route('task_statuses.update', $status->id), 'class' => 'd-flex justify-content-center', 'method' => 'PATCH']) }}
                                 {{ Form::text('name', $status->name, ['class' => 'form-control form-control-lg']) }}
-                                {{ Form::submit(__('messages.update'), ['class' => 'btn btn-lg btn-primary ml-3 px-5 text-uppercase']) }}
+                                {{ Form::submit(__('messages.update'), ['class' => 'btn btn-primary ml-3 px-5 text-uppercase']) }}
                             {{ Form::close() }}
                     </div>
                 </div>

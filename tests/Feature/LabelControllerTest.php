@@ -21,7 +21,6 @@ class LabelControllerTest extends TestCase
         $this->seed(LabelSeeder::class);
         
         $user = factory(User::class)->create();
-
         $response = $this->actingAs($user)
                          ->withSession(['foo' => 'bar'])
                          ->get('/');

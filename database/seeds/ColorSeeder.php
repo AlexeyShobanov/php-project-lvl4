@@ -35,6 +35,10 @@ class ColorSeeder extends Seeder
                 'name' => 'white',
                 'btn_style' => 'light',
             ],
+            [
+                'name' => 'turquoise',
+                'btn_style' => 'info',
+            ],
         ]);
     }
 }

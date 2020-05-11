@@ -29,4 +29,9 @@ class Task extends Model
     {
         return $this->belongsTo(__NAMESPACE__ . '\Label');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(__NAMESPACE__ . '\Comment');
+    }
 }

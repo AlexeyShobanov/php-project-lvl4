@@ -39,29 +39,26 @@
                         <td>{{ $task->id }}</td>
                         <td>
                             <div class="d-inline-block">
-                            {{ $task->name}}
+                            <a class="btn btn-link" href="{{ route('tasks.show', $task->id) }}"> {{ $task->name}} </a>
                             </div>
                             <div class="d-inline-block">
-                                <a class="btn btn-sm btn-{{ $task->label_style }}" href="{{ route('tasks.index') }}?label={{ $task->label_id }}{{ $filterStatusBar }}"> {{ $task->label_name }} </a>   
+                                <a class="badge badge-{{ $task->label_style }}" href="{{ route('tasks.index') }}?label={{ $task->label_id }}{{ $filterStatusBar }}"> {{ $task->label_name }} </a>   
                             </div>
                         </td>
-                        <td>{{ $task->status_name }}</td>
+                        <td> {{ $task->status_name }}</td>
                         <td>{{ $task->created_by_name}}</td>
                         <td>{{ $task->assigned_to_name ?? ''}}</td>
                         <td>{{ $task->created_at}} </td>
                         @if (Auth::user())
                             <td class='text-center'>
                                 <div class="d-inline-block">
-                                    {{ Form::open(['url' => route('tasks.edit', $task->id), 'method' => 'GET']) }}
-                                        {{ Form::submit(__('messages.edit'), ['class' => 'btn btn-sm btn-secondary', 'name' => 'b1']) }}
-                                    {{ Form::close() }}
+                                    <a class="btn btn-sm btn-secondary" href="{{ route('tasks.edit', $task->id) }}"> {{ __('messages.edit') }} </a>
                                 </div>
                                 <div class="d-inline-block">
                                     {{ Form::open(['url' => route('tasks.destroy', $task->id), 'method' => 'DELETE']) }}
                                         {{ Form::submit(__('messages.delete'), ['class' => 'btn btn-sm btn-secondary', 'data-confirm' => __('messages.areYouSure'), 'rel' => "nofollow"]) }}
                                     {{ Form::close() }}
                                 </div>
-                        
                             </td>
                         @endif
                     </tr>

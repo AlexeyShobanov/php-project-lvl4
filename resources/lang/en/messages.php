@@ -60,6 +60,9 @@ return [
     'editLabel' => 'Edit Label',
     'label' => 'Label',
     'apply' => 'Apply',
-    'clear' => 'Clear'
-    
+    'clear' => 'Clear',
+    'comments' => 'Comments',
+    'comment' => 'Comment',
+    'editComment' => 'Edit Comment',
+    'content' => 'Content',
 ];

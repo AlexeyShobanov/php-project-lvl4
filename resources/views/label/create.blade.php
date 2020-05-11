@@ -24,7 +24,7 @@
                     {{ Form::select('color_id', $colors, null, ['placeholder' => __('messages.color'), 'class' => 'form-control form-control-lg']) }}
                 </div>
                 <div class="form-group">
-                    {{ Form::submit(__('messages.create'), ['class' => 'btn btn-lg btn-primary px-5 text-uppercase']) }}
+                    {{ Form::submit(__('messages.create'), ['class' => 'btn btn-primary px-5 text-uppercase']) }}
                 </div> 
                 {{ Form::close() }}
             </div>

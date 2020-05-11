@@ -16,6 +16,7 @@ class AuthServiceProvider extends ServiceProvider
         TaskStatus::class => TaskStatusPolicy::class,
         Task::class => TaskPolicy::class,
         Label::class => LabelPolicy::class,
+        Comment::class => CommentPolicy::class,
     ];
 
     /**

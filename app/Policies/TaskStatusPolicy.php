@@ -35,14 +35,4 @@ class TaskStatusPolicy
     {
         return true;
     }
-
-    public function restore(User $user, TaskStatus $taskStatus)
-    {
-        //
-    }
-
-    public function forceDelete(User $user, TaskStatus $taskStatus)
-    {
-        //
-    }
 }

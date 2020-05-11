@@ -9,19 +9,6 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class TaskPolicy
 {
     use HandlesAuthorization;
-
-    
-    public function viewAny(User $user)
-    {
-        //
-    }
-
-    
-    public function view(User $user, Task $task)
-    {
-        //
-    }
-
     
     public function create(User $user)
     {
@@ -43,39 +30,8 @@ class TaskPolicy
         return true;
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Task  $task
-     * @return mixed
-     */
     public function delete(User $user, Task $task)
     {
         return $user->id == $task->created_by_id;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Task  $task
-     * @return mixed
-     */
-    public function restore(User $user, Task $task)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Task  $task
-     * @return mixed
-     */
-    public function forceDelete(User $user, Task $task)
-    {
-        //
     }
 }
