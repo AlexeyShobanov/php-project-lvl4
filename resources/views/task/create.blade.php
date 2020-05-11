@@ -26,7 +26,7 @@
                     </div>
                     <div class="form-group">
                         <label for="status_id">{{__('messages.status')}}</label>
-                        {{ Form::select('status_id', $statuses, null, ['placeholder' => __('messages.status'), 'class' => 'form-control form-control-lg' . ($errors->has('status_id') ? ' is-invalid' : '')]) }}
+                        {{ Form::select('status_id', $statuses, $defaultStatus, ['placeholder' => __('messages.status'), 'class' => 'form-control form-control-lg' . ($errors->has('status_id') ? ' is-invalid' : '')]) }}
                         @error('status_id')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

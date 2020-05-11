@@ -71,7 +71,8 @@ class TaskController extends Controller
         $statuses = TaskStatus::select('id', 'name')->get()->pluck('name', 'id')->all();
         $users = User::select('id', 'name')->get()->pluck('name', 'id')->all();
         $labels = Label::select('id', 'name')->get()->pluck('name', 'id')->all();
-        return view('task.create', compact('statuses', 'users', 'labels'));
+        $defaultStatus = array_search(__('messages.new'), $statuses) ?? null;
+        return view('task.create', compact('statuses', 'users', 'labels', 'defaultStatus'));
     }
 
     public function store(Request $request)
