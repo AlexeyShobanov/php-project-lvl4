@@ -1,11 +1,8 @@
 setup:
 	composer install
 	cp -n .env.example .env
-	cp -n .env.example .env.testing
-	awk '/DB_CONNECTION=sqlite/ { print; print "DB_DATABASE=./database/db_for_testing.sqlite"; next }1' .env.testing
 	php artisan key:gen --ansi
 	touch database/database.sqlite || true
-	touch database/db_for_testing.sqlite || true
 	php artisan migrate
 	php artisan db:seed --force
 
@@ -20,7 +17,7 @@ console:
 
 test:
 	php artisan config:clear 
-	php artisan test --env=testing
+	php artisan test
 
 coverage:
 	./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
