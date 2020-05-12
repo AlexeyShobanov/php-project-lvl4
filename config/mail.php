@@ -35,7 +35,7 @@ return [
 
     'mailers' => [
         'smtp' => [
-            '"driver" => "smtp",
+            "driver" => "smtp",
             "host" => "smtp.mailtrap.io",
             "port" => 2525,
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
