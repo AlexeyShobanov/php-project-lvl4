@@ -12,8 +12,10 @@ https://php-lvl4-task-manager.herokuapp.com/
 
 ## Installation
 
-`$ git clone https://github.com/AlexeyShobanov/php-project-lvl4.git`
-`$ make innstall`
+```
+$ git clone https://github.com/AlexeyShobanov/php-project-lvl4.git
+$ make innstall
+```
 
 ## Run test
 
