@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\TaskStatus;
 use App\User;
@@ -11,18 +10,15 @@ use TaskStatusSeeder;
 
 class TaskControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
-    protected $user;
+    private $user;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->seed();
-        $this->seed(TaskStatusSeeder::class);
 
         $this->user = factory(User::class)->create();
-        $response = $this->actingAs($this->user)
+        $this->actingAs($this->user)
                          ->withSession(['foo' => 'bar'])
                          ->get('/');
     }
@@ -44,7 +40,7 @@ class TaskControllerTest extends TestCase
         $task = factory(Task::class)->create([
             'created_by_id' => $this->user->id
         ]);
-        $response = $this->get(route('tasks.show', $task->id));
+        $response = $this->get(route('tasks.show', $task));
         $response->assertOk();
     }
 
@@ -53,7 +49,7 @@ class TaskControllerTest extends TestCase
         $task = factory(Task::class)->create([
             'created_by_id' => $this->user->id
         ]);
-        $response = $this->get(route('tasks.edit', $task->id));
+        $response = $this->get(route('tasks.edit', $task));
         $response->assertOk();
     }
 
@@ -75,9 +71,8 @@ class TaskControllerTest extends TestCase
         $task = factory(Task::class)->create([
             'created_by_id' => $this->user->id
         ]);
-        $user2 = factory(User::class)->create();
         $factoryData = factory(Task::class)->make([
-            'created_by_id' => $user2->id
+            'created_by_id' => $this->user->id
         ])->toArray();
         $data = \Arr::only($factoryData, ['name', 'status_id']);
         $response = $this->patch(route('tasks.update', $task), $data);
@@ -92,15 +87,10 @@ class TaskControllerTest extends TestCase
         $task = factory(Task::class)->create([
             'created_by_id' => $this->user->id
         ]);
-        $response = $this->delete(route('tasks.destroy', $task->id));
+        $response = $this->delete(route('tasks.destroy', $task));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
         $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
     }
 }

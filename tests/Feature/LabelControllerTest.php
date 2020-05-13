@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Label;
 use App\Color;
@@ -12,16 +11,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LabelControllerTest extends TestCase
 {
-    use RefreshDatabase;
-    
     protected function setUp(): void
     {
         parent::setUp();
         $this->seed();
-        $this->seed(LabelSeeder::class);
         
         $user = factory(User::class)->create();
-        $response = $this->actingAs($user)
+        $this->actingAs($user)
                          ->withSession(['foo' => 'bar'])
                          ->get('/');
     }
@@ -42,7 +38,7 @@ class LabelControllerTest extends TestCase
     public function testEdit()
     {
         $label = factory(Label::class)->create();
-        $response = $this->get(route('labels.edit', $label->id));
+        $response = $this->get(route('labels.edit', $label));
         $response->assertOk();
     }
 
@@ -72,7 +68,7 @@ class LabelControllerTest extends TestCase
     public function testDestroy()
     {
         $label = factory(Label::class)->create();
-        $response = $this->delete(route('labels.destroy', $label->id));
+        $response = $this->delete(route('labels.destroy', $label));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
@@ -80,10 +76,5 @@ class LabelControllerTest extends TestCase
             'id' => $label->id,
             'name' => $label->name,
         ]);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
     }
 }

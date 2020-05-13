@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\TaskStatus;
 use App\User;
@@ -10,16 +9,13 @@ use TaskStatusSeeder;
 
 class TaskStatusControllerTest extends TestCase
 {
-    use RefreshDatabase;
-    
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
         $this->seed(TaskStatusSeeder::class);
         
         $user = factory(User::class)->create();
-        $response = $this->actingAs($user)
+        $this->actingAs($user)
                          ->withSession(['foo' => 'bar'])
                          ->get('/');
     }
@@ -40,7 +36,7 @@ class TaskStatusControllerTest extends TestCase
     public function testEdit()
     {
         $status = factory(TaskStatus::class)->create();
-        $response = $this->get(route('task_statuses.edit', $status->id));
+        $response = $this->get(route('task_statuses.edit', $status));
         $response->assertOk();
     }
 
@@ -70,7 +66,7 @@ class TaskStatusControllerTest extends TestCase
     public function testDestroy()
     {
         $status = factory(TaskStatus::class)->create();
-        $response = $this->delete(route('task_statuses.destroy', $status->id));
+        $response = $this->delete(route('task_statuses.destroy', $status));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
@@ -78,10 +74,5 @@ class TaskStatusControllerTest extends TestCase
             'id' => $status->id,
             'name' => $status->name,
         ]);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
     }
 }

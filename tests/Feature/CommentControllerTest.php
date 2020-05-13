@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Comment;
 use App\Task;
@@ -11,22 +10,19 @@ use TaskStatusSeeder;
 
 class CommentControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
-    protected $task;
-    protected $user;
+    private $task;
+    private $user;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->seed();
-        $this->seed(TaskStatusSeeder::class);
 
         $this->user = factory(User::class)->create();
         $this->task = factory(Task::class)->create([
             'created_by_id' => $this->user->id
         ]);
-        $response = $this->actingAs($this->user)
+        $this->actingAs($this->user)
                          ->withSession(['foo' => 'bar'])
                          ->get('/');
     }
@@ -38,7 +34,7 @@ class CommentControllerTest extends TestCase
             'created_by_id' => $this->user->id
         ])->toArray();
         $content = \Arr::only($factoryData, ['content']);
-        $response = $this->post(route('tasks.comments.store', $this->task->id), $content);
+        $response = $this->post(route('tasks.comments.store', $this->task), $content);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
@@ -51,7 +47,7 @@ class CommentControllerTest extends TestCase
             'task_id' => $this->task->id,
             'created_by_id' => $this->user->id
         ]);
-        $response = $this->get(route('tasks.comments.edit', [$this->task, $comment->id]));
+        $response = $this->get(route('tasks.comments.edit', [$this->task, $comment]));
         $response->assertOk();
     }
 
@@ -70,7 +66,7 @@ class CommentControllerTest extends TestCase
             'created_by_id' => $user2->id
         ])->toArray();
         $content = \Arr::only($factoryData, ['content']);
-        $response = $this->patch(route('tasks.comments.update', [$this->task, $comment->id]), $content);
+        $response = $this->patch(route('tasks.comments.update', [$this->task, $comment]), $content);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
@@ -83,15 +79,10 @@ class CommentControllerTest extends TestCase
             'task_id' => $this->task->id,
             'created_by_id' => $this->user->id
         ]);
-        $response = $this->delete(route('tasks.comments.destroy', [$this->task, $comment->id]));
+        $response = $this->delete(route('tasks.comments.destroy', [$this->task, $comment]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
         $this->assertDatabaseMissing('comments', ['id' => $comment->id]);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
     }
 }
