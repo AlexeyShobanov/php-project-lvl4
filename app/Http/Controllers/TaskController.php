@@ -11,9 +11,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Auth;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class TaskController extends Controller
 {
+    /* public function __construct()
+    {
+        $this->authorizeResource(Task::class);
+    } */
+
     public function index(Request $request)
     {
         $data = $request->all();
@@ -59,7 +65,7 @@ class TaskController extends Controller
             'labels.name as label_name',
             'colors.btn_style as label_style'
         )
-        ->get();
+        ->paginate(self::PAGINATE_COUNT);
 
         return view('task.index', compact('tasks', 'statuses', 'users', 'filter', 'filterStatusBar', 'labelFilter'));
     }
@@ -78,7 +84,7 @@ class TaskController extends Controller
     public function store(Request $request)
     {
 
-        $this->authorize('store', Task::class);
+        $this->authorize('create', Task::class);
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -114,13 +120,13 @@ class TaskController extends Controller
             'comments.*',
             'users.name as created_by_name'
         )
-        ->get();
+        ->paginate(self::PAGINATE_COUNT);
         return view('task.show', compact('task', 'comments'));
     }
 
     public function edit(Task $task)
     {
-        $this->authorize('edit', $task);
+        $this->authorize('update', $task);
         $statuses = TaskStatus::select('id', 'name')->get()->pluck('name', 'id')->all();
         $users = User::select('id', 'name')->get()->pluck('name', 'id')->all();
         $labels = Label::select('id', 'name')->get()->pluck('name', 'id')->all();

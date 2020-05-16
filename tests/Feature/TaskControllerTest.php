@@ -3,10 +3,8 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\TaskStatus;
 use App\User;
 use App\Task;
-use TaskStatusSeeder;
 
 class TaskControllerTest extends TestCase
 {

@@ -6,13 +6,14 @@ use App\TaskStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class TaskStatusController extends Controller
 {
     
     public function index()
     {
-        $statuses = TaskStatus::all();
+        $statuses = TaskStatus::paginate(self::PAGINATE_COUNT);
         return view('task_status.index', compact('statuses'));
     }
 
@@ -25,7 +26,7 @@ class TaskStatusController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('store', TaskStatus::class);
+        $this->authorize('create', TaskStatus::class);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255'
         ], self::MESSAGES);
@@ -57,7 +58,7 @@ class TaskStatusController extends Controller
     
     public function edit(TaskStatus $taskStatus)
     {
-        $this->authorize('edit', $taskStatus);
+        $this->authorize('update', $taskStatus);
         $status = TaskStatus::findOrFail($taskStatus->id);
         return view('task_status.edit', compact('status'));
     }

@@ -6,6 +6,7 @@ use App\Label;
 use App\Color;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class LabelController extends Controller
 {
@@ -18,7 +19,7 @@ class LabelController extends Controller
             'colors.name as color_name'
         )
         ->whereNull('labels.deleted_at')
-        ->get();
+        ->paginate(self::PAGINATE_COUNT);
         return view('label.index', compact('labels'));
     }
 
@@ -31,7 +32,7 @@ class LabelController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('store', Label::class);
+        $this->authorize('create', Label::class);
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255'
@@ -71,7 +72,7 @@ class LabelController extends Controller
     
     public function edit(Label $label)
     {
-        $this->authorize('edit', $label);
+        $this->authorize('update', $label);
         $colors = Color::select('id', 'name')->get()->pluck('name', 'id')->all();
         return view('label.edit', compact('colors', 'label'));
     }

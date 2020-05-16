@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Comment;
 use App\Task;
 use App\User;
 use TaskStatusSeeder;
@@ -29,7 +28,7 @@ class CommentControllerTest extends TestCase
 
     public function testStore()
     {
-        $factoryData = factory(Comment::class)->make([
+        $factoryData = factory(Task\Comment::class)->make([
             'task_id' => $this->task->id,
             'created_by_id' => $this->user->id
         ])->toArray();
@@ -43,7 +42,7 @@ class CommentControllerTest extends TestCase
 
     public function testEdit()
     {
-        $comment = factory(Comment::class)->create([
+        $comment = factory(Task\Comment::class)->create([
             'task_id' => $this->task->id,
             'created_by_id' => $this->user->id
         ]);
@@ -53,7 +52,7 @@ class CommentControllerTest extends TestCase
 
     public function testUpdate()
     {
-        $comment = factory(Comment::class)->create([
+        $comment = factory(Task\Comment::class)->create([
             'task_id' => $this->task->id,
             'created_by_id' => $this->user->id
         ]);
@@ -61,7 +60,7 @@ class CommentControllerTest extends TestCase
         $task2 = factory(Task::class)->create([
             'created_by_id' => $user2->id
         ]);
-        $factoryData = factory(Comment::class)->make([
+        $factoryData = factory(Task\Comment::class)->make([
             'task_id' => $task2->id,
             'created_by_id' => $user2->id
         ])->toArray();
@@ -75,7 +74,7 @@ class CommentControllerTest extends TestCase
 
     public function testDestroy()
     {
-        $comment = factory(Comment::class)->create([
+        $comment = factory(Task\Comment::class)->create([
             'task_id' => $this->task->id,
             'created_by_id' => $this->user->id
         ]);

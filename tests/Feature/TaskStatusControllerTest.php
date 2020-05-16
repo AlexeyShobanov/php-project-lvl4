@@ -24,7 +24,6 @@ class TaskStatusControllerTest extends TestCase
     {
         $response = $this->get(route('task_statuses.index'));
         $response->assertOk();
-        $this->assertDatabaseHas('task_statuses', ['name' => 'New']);
     }
 
     public function testCreate()

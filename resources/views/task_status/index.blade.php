@@ -5,9 +5,9 @@
         <h1 class="mt-5 mb-3">{{ __('messages.taskStatuses') }}</h1>
         <div class="table-responsive">
 
-            @if (Auth::user())
+            @auth
                  <a class="btn btn-primary text-uppercase" href="{{ route('task_statuses.create') }}">{{__('messages.addNew')}}</a>
-            @endif
+            @endauth
 
             <table class="table mt-2">
                 <tr>
@@ -21,7 +21,7 @@
                     <tr>
                         <td>{{ $status->name }}</td>
                         <td>{{ $status->created_at ?? ''}} </td>
-                        @if (Auth::user())
+                        @auth
                             <td class='text-center'>
                                 <div class="d-inline-block">
                                     {{ Form::open(['url' => route('task_statuses.edit', $status->id), 'method' => 'GET']) }}
@@ -35,9 +35,10 @@
                                     {{ Form::close() }}
                                 </div>
                             </td>
-                        @endif
+                        @endauth
                     </tr>
                 @endforeach
+                {{ $statuses->links() }}
             </table>
         </div>
     </div>

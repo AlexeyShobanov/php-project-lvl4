@@ -4,9 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Label;
-use App\Color;
 use App\User;
-use LabelSeeder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LabelControllerTest extends TestCase
@@ -26,7 +24,6 @@ class LabelControllerTest extends TestCase
     {
         $response = $this->get(route('labels.index'));
         $response->assertOk();
-        $this->assertDatabaseHas('labels', ['name' => 'bug']);
     }
 
     public function testCreate()

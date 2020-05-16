@@ -5,7 +5,7 @@
     <div class="container-lg">
         <h1 class="mt-5 mb-3">Task: {{ $task->name }}</h1>
         <p class="lead">{{ $task->description }}</p>
-        @if (Auth::user())
+        @auth
             {{ Form::open(['url' => route('tasks.comments.store', $task->id)]) }}
                 <div class="form-group">
                     <label for="content">{{__('messages.comment')}}</label>
@@ -13,7 +13,7 @@
                 </div>
                 {{ Form::submit(__('messages.create'), ['class' => 'btn btn-primary px-5 text-uppercase']) }}
             {{ Form::close() }}
-        @endif
+        @endauth
     <hr>
     <h3 class="mt-3 mb-1">{{__('messages.comments')}}</h3>
     <table class="table mt-2">
@@ -23,7 +23,7 @@
                         <td>{{ $comment->content}}</td>
                         <td>{{ $comment->created_by_name}}</td>
                         <td>{{ $comment->created_at}} </td>
-                        @if (Auth::user())
+                        @auth
                             <td class='text-center'>
                                 <div class="d-inline-block pt-1 pb-1">
                                     <a class="btn btn-sm btn-secondary" href="{{ route('tasks.comments.edit', [$task, $comment->id]) }}"> {{ __('messages.edit') }} </a>
@@ -34,9 +34,10 @@
                                     {{ Form::close() }}
                                 </div>
                             </td>
-                        @endif
+                        @endauth
                     </tr>
                 @endforeach
+                {{ $comments->links() }}
             </table>
     </div>
 

@@ -17,5 +17,8 @@ class Controller extends BaseController
             'required' => "The :attribute field is required!",
             'string' => "The :attribute must be string!",
             'max' => "The :attribute exceeds the maximum number of characters equal to :max!",
+            'min' => "The :attribute exceeds the minimum number of characters equal to :min!",
         ];
+
+    protected const PAGINATE_COUNT = 10;
 }

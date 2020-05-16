@@ -5,9 +5,9 @@
         <h1 class="mt-5 mb-3">{{ __('messages.labels') }}</h1>
         <div class="table-responsive">
 
-            @if (Auth::user())
+            @auth
                 <a class="btn btn-primary text-uppercase" href="{{ route('labels.create') }}">{{__('messages.addNew')}}</a>
-            @endif
+            @endauth
 
             <table class="table mt-2">
                 <tr>
@@ -15,9 +15,9 @@
                     <th>{{__('messages.description')}}</th>
                     <th>{{__('messages.color')}}</th>
                     <th>{{__('messages.createdAt')}}</th>
-                    @if (Auth::user())
+                    @auth
                         <th class='text-center'>{{__('messages.actions')}}</th>
-                    @endif
+                    @endauth
                 </tr>
                 @foreach($labels as $label)
                     <tr>
@@ -25,23 +25,23 @@
                         <td>{{ $label->description }}</td>
                         <td>{{ $label->color_name }}</td>
                         <td>{{ $label->created_at ?? ''}} </td>
-                        @if (Auth::user())
-                            <td class='text-center'>
+                        <td class='text-center'>
+                            @auth
                                 <div class="d-inline-block">
                                     {{ Form::open(['url' => route('labels.edit', $label->id), 'method' => 'GET']) }}
                                         {{ Form::submit(__('messages.edit'), ['class' => 'btn btn-sm btn-secondary']) }}
                                     {{ Form::close() }}
                                 </div>
-                           
                                 <div class="d-inline-block">
                                     {{ Form::open(['url' => route('labels.destroy', $label->id), 'method' => 'DELETE']) }}
                                         {{ Form::submit(__('messages.delete'), ['class' => 'btn btn-sm btn-secondary', 'data-confirm' => __('messages.areYouSure'), 'rel' => "nofollow"]) }}
                                     {{ Form::close() }}
                                 </div>
-                            </td>
-                        @endif
+                            @endauth
+                        </td>
                     </tr>
                 @endforeach
+                {{ $labels->links() }}
             </table>
         </div>
     </div>

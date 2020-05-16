@@ -1,21 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Task;
 
-use App\Comment;
 use App\Task;
+use App\Task\Comment;
 use App\User;
 use App\TaskStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use App\Http\Controllers\Controller;
 use Auth;
 
 class CommentController extends Controller
 {
     public function store(Request $request, Task $task)
     {
-        $this->authorize('store', Task::class);
+        $this->authorize('create', Task::class);
         $validator = Validator::make($request->all(), [
             'content' => 'required|string|min:3'
         ], self::MESSAGES);
@@ -31,7 +32,7 @@ class CommentController extends Controller
         $comment = $validator->valid();
 
         $created_by_id = Auth::user()->id;
-        Comment::create(array_merge($comment, ['created_by_id' => $created_by_id], ['task_id' => $task->id]));
+        Task\Comment::create(array_merge($comment, ['created_by_id' => $created_by_id], ['task_id' => $task->id]));
 
         flash(__('messages.taskAddedSuccessfully'))->success();
 
@@ -42,7 +43,7 @@ class CommentController extends Controller
     
     public function edit(Task $task, Comment $comment)
     {
-        $this->authorize('edit', $comment);
+        $this->authorize('update', $comment);
         $status = TaskStatus::findOrFail($comment->id);
         return view('comment.edit', compact('comment', 'task'));
     }

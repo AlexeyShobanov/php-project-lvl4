@@ -17,9 +17,9 @@
                    
                 </div>
 
-            @if (Auth::user())
+            @auth
                 <a class="btn btn-primary text-uppercase mb-3 ml-auto" href="{{ route('tasks.create') }}">{{__('messages.addNew')}}</a>
-            @endif
+            @endauth
             </div>
 
             <table class="table mt-2">
@@ -30,9 +30,9 @@
                     <th>{{__('messages.creator')}}</th>
                     <th>{{__('messages.assignee')}}</th>
                     <th>{{__('messages.createdAt')}}</th>
-                    @if (Auth::user())
+                    @auth
                         <th class='text-center'>{{__('messages.actions')}}</th>
-                    @endif
+                    @endauth
                 </tr>
                 @foreach($tasks as $task)
                     <tr>
@@ -49,20 +49,23 @@
                         <td>{{ $task->created_by_name}}</td>
                         <td>{{ $task->assigned_to_name ?? ''}}</td>
                         <td>{{ $task->created_at}} </td>
-                        @if (Auth::user())
-                            <td class='text-center'>
+                        <td class='text-center'>
+                            @can('update', $task)
                                 <div class="d-inline-block">
                                     <a class="btn btn-sm btn-secondary" href="{{ route('tasks.edit', $task->id) }}"> {{ __('messages.edit') }} </a>
                                 </div>
+                            @endcan
+                            @auth
                                 <div class="d-inline-block">
                                     {{ Form::open(['url' => route('tasks.destroy', $task->id), 'method' => 'DELETE']) }}
                                         {{ Form::submit(__('messages.delete'), ['class' => 'btn btn-sm btn-secondary', 'data-confirm' => __('messages.areYouSure'), 'rel' => "nofollow"]) }}
                                     {{ Form::close() }}
                                 </div>
-                            </td>
-                        @endif
+                            @endauth
+                        </td>
                     </tr>
                 @endforeach
+                {{ $tasks->links() }}
             </table>
         </div>
     </div>

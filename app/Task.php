@@ -32,6 +32,6 @@ class Task extends Model
 
     public function comments()
     {
-        return $this->hasMany(__NAMESPACE__ . '\Comment');
+        return $this->hasMany(__NAMESPACE__ . '\Task\Comment');
     }
 }

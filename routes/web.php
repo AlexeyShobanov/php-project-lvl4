@@ -31,4 +31,4 @@ Route::resource('/tasks', 'TaskController');
 
 Route::resource('/labels', 'LabelController');
 
-Route::resource('/tasks.comments', 'CommentController');
+Route::resource('/tasks.comments', 'Task\CommentController');
