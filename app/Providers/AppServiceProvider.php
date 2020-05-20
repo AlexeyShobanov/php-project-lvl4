@@ -23,10 +23,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /* $this->registerPolicies();
-        Gate::define('update-status', function ($user, $status) {
-            return $user->id == $status->user_id;
-        }); */
+        if (config('app.debug') === true) {
+            \DB::listen(function ($query) {
+                \Log::info('Q: ' . $query->sql);
+            });
+        }
 
         if (config('app.env') != 'local') {
             \URL::forceScheme('https');

@@ -37,6 +37,7 @@ class TaskController extends Controller
         $statuses = TaskStatus::select('id', 'name')->get()->pluck('name', 'id')->all();
         $users = User::select('id', 'name')->get()->pluck('name', 'id')->all();
         $tasks = QueryBuilder::for(Task::class)
+            ->with('label.color')
             ->allowedFilters(['created_by_id', 'assigned_to_id', 'status_id', 'label_id'])
             ->paginate(self::PAGINATE_COUNT);
         return view('task.index', compact('tasks', 'statuses', 'users', 'filter', 'filterStatusBar'));
