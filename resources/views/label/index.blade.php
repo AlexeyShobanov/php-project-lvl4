@@ -2,41 +2,33 @@
 
 @section('content')
 <div class="container-lg">
-        <h1 class="mt-5 mb-3">{{ __('messages.labels') }}</h1>
+        <h1 class="mt-5 mb-3">{{ __('views.label.index.header') }}</h1>
         <div class="table-responsive">
 
             @auth
-                <a class="btn btn-primary text-uppercase" href="{{ route('labels.create') }}">{{__('messages.addNew')}}</a>
+                <x-link name="{{ __('views.label.index.new') }}" route="{{ route('labels.create') }}" class="btn btn-primary text-uppercase"/>
             @endauth
 
             <table class="table mt-2">
                 <tr>
-                    <th>{{__('messages.name')}}</th>
-                    <th>{{__('messages.description')}}</th>
-                    <th>{{__('messages.color')}}</th>
-                    <th>{{__('messages.createdAt')}}</th>
+                    <th>{{__('views.label.index.name')}}</th>
+                    <th>{{__('views.label.index.description')}}</th>
+                    <th>{{__('views.label.index.color')}}</th>
+                    <th>{{__('views.label.index.created')}}</th>
                     @auth
-                        <th class='text-center'>{{__('messages.actions')}}</th>
+                        <th class='text-center'>{{__('views.label.index.actions')}}</th>
                     @endauth
                 </tr>
                 @foreach($labels as $label)
                     <tr>
                         <td>{{ $label->name }}</td>
                         <td>{{ $label->description }}</td>
-                        <td>{{ $label->color_name }}</td>
+                        <td>{{ $label->color }}</td>
                         <td>{{ $label->created_at ?? ''}} </td>
                         <td class='text-center'>
                             @auth
-                                <div class="d-inline-block">
-                                    {{ Form::open(['url' => route('labels.edit', $label->id), 'method' => 'GET']) }}
-                                        {{ Form::submit(__('messages.edit'), ['class' => 'btn btn-sm btn-secondary']) }}
-                                    {{ Form::close() }}
-                                </div>
-                                <div class="d-inline-block">
-                                    {{ Form::open(['url' => route('labels.destroy', $label->id), 'method' => 'DELETE']) }}
-                                        {{ Form::submit(__('messages.delete'), ['class' => 'btn btn-sm btn-secondary', 'data-confirm' => __('messages.areYouSure'), 'rel' => "nofollow"]) }}
-                                    {{ Form::close() }}
-                                </div>
+                                <x-link name="{{ __('views.label.index.edit') }}" route="{{ route('labels.edit', $label->id) }}" class="btn btn-sm btn-secondary"/>
+                                <x-delete-button name="{{ __('views.label.index.remove') }}" route="{{ route('labels.destroy', $label->id) }}" class="btn btn-sm btn-secondary"/>
                             @endauth
                         </td>
                     </tr>

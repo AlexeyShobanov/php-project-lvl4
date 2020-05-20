@@ -17,4 +17,9 @@ class Color extends Model
     {
         return $this->hasMany(__NAMESPACE__ . '\Label');
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

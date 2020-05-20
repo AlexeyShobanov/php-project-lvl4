@@ -22,4 +22,9 @@ class Label extends Model
     {
         return $this->belongsTo(__NAMESPACE__ . '\Color');
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

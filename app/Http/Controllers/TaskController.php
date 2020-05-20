@@ -6,121 +6,78 @@ use App\Task;
 use App\User;
 use App\Label;
 use App\Color;
+use App\Task\Comment;
 use App\TaskStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
-    /* public function __construct()
-    {
-        $this->authorizeResource(Task::class);
-    } */
-
     public function index(Request $request)
     {
         $data = $request->all();
         $filter = $data['filter'] ?? [];
-        $labelFilter = $data['label'] ?? null;
         $filterStatusBar = '';
         if ($filter) {
-            $filterStatusBar = '&' . implode(
+            $filterStatusBar = implode(
                 '&',
-                array_map(function ($filterKey) use ($filter) {
-                    return "filter%5B{$filterKey}%5D={$filter[$filterKey]}";
+                array_reduce(array_keys($filter), function ($acc, $filterKey) use ($filter) {
+                    return $filterKey != 'label_id' ?
+                    array_merge($acc, ["filter%5B{$filterKey}%5D={$filter[$filterKey]}"]) :
+                    $acc;
                 },
-                array_keys($filter))
+                [])
             );
         }
         $statuses = TaskStatus::select('id', 'name')->get()->pluck('name', 'id')->all();
         $users = User::select('id', 'name')->get()->pluck('name', 'id')->all();
-        $tasks = \DB::table('tasks')
-        ->join('users as u1', 'u1.id', '=', 'tasks.created_by_id')
-        ->join('task_statuses', 'task_statuses.id', '=', 'tasks.status_id')
-        ->leftJoin('users as u2', 'u2.id', '=', 'tasks.assigned_to_id')
-        ->leftJoin('labels', 'labels.id', '=', 'tasks.label_id')
-        ->leftJoin('colors', 'colors.id', '=', 'labels.color_id')
-        ->when($filter, function ($tasks) use ($filter, $labelFilter) {
-            return $tasks->when($filter['created_by_id'], function ($tasks) use ($filter) {
-                return $tasks->where('tasks.created_by_id', $filter['created_by_id']);
-            })
-            ->when($filter['assigned_to_id'], function ($tasks) use ($filter) {
-                return $tasks->where('tasks.assigned_to_id', $filter['assigned_to_id']);
-            })
-            ->when($filter['status_id'], function ($tasks) use ($filter) {
-                return $tasks->where('tasks.status_id', $filter['status_id']);
-            });
-        })
-        ->when($labelFilter, function ($tasks) use ($labelFilter) {
-            return $tasks->where('tasks.label_id', $labelFilter);
-        })
-        ->select(
-            'tasks.*',
-            'u1.name as created_by_name',
-            'task_statuses.name as status_name',
-            'u2.name as assigned_to_name',
-            'labels.name as label_name',
-            'colors.btn_style as label_style'
-        )
-        ->paginate(self::PAGINATE_COUNT);
-
-        return view('task.index', compact('tasks', 'statuses', 'users', 'filter', 'filterStatusBar', 'labelFilter'));
+        $tasks = QueryBuilder::for(Task::class)
+            ->allowedFilters(['created_by_id', 'assigned_to_id', 'status_id', 'label_id'])
+            ->paginate(self::PAGINATE_COUNT);
+        return view('task.index', compact('tasks', 'statuses', 'users', 'filter', 'filterStatusBar'));
     }
 
     public function create()
     {
         $this->authorize('create', Task::class);
-
+        $task = new Task();
         $statuses = TaskStatus::select('id', 'name')->get()->pluck('name', 'id')->all();
         $users = User::select('id', 'name')->get()->pluck('name', 'id')->all();
         $labels = Label::select('id', 'name')->get()->pluck('name', 'id')->all();
         $defaultStatus = array_search(__('messages.new'), $statuses) ?? null;
-        return view('task.create', compact('statuses', 'users', 'labels', 'defaultStatus'));
+        return view('task.create', compact('task', 'statuses', 'users', 'labels', 'defaultStatus'));
     }
 
     public function store(Request $request)
     {
-
         $this->authorize('create', Task::class);
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'status_id' => 'required'
         ], self::MESSAGES);
-        
         if ($validator->fails()) {
-            flash(__('messages.incorrectDataEntered'))->error();
+            flash(__('flash.commonPhrases.wrongInput'))->error();
             return redirect()
                 ->route('tasks.create')
                 ->withErrors($validator)
                 ->withInput();
         }
-    
         $task = $validator->valid();
-
         $created_by_id = Auth::user()->id;
         Task::create(array_merge($task, ['created_by_id' => $created_by_id]));
-
-        flash(__('messages.taskAddedSuccessfully'))->success();
-
+        flash(__('flash.task.create.success'))->success();
         return redirect()
             ->route('tasks.index');
     }
 
     public function show(Task $task)
     {
-        $comments = \DB::table('comments')
-        ->where('comments.task_id', $task->id)
-        ->join('users', 'users.id', '=', 'comments.created_by_id')
-        ->join('tasks', 'tasks.id', '=', 'comments.task_id')
-        ->select(
-            'comments.*',
-            'users.name as created_by_name'
-        )
-        ->paginate(self::PAGINATE_COUNT);
+        $comments = Comment::paginate(self::PAGINATE_COUNT);
         return view('task.show', compact('task', 'comments'));
     }
 
@@ -140,21 +97,17 @@ class TaskController extends Controller
             'name' => 'required|string|max:255',
             'status_id' => 'required'
         ], self::MESSAGES);
-        
         if ($validator->fails()) {
-            flash(__('messages.incorrectDataEntered'))->error();
+            flash(__('flash.commonPhrases.wrongInput'))->error();
             return redirect()
                 ->route('tasks.update')
                 ->withErrors($validator)
                 ->withInput();
         }
-
         $data = $validator->valid();
         $task->fill($data)
             ->save();
-
-        flash(__('messages.taskUpdatedSuccessfully'))->success();
-
+        flash(__('flash.task.update.success'))->success();
         return redirect()
             ->route('tasks.index');
     }
@@ -163,6 +116,7 @@ class TaskController extends Controller
     {
         $this->authorize('delete', $task);
         $task->delete();
+        flash(__('flash.task.remove.success'))->success();
         return redirect()
             ->route('tasks.index');
     }

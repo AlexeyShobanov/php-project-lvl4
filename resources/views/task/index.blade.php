@@ -2,36 +2,34 @@
 
 @section('content')
 <div class="container-lg">
-        <h1 class="mt-5 mb-3">{{ __('messages.task') }}</h1>
+        <h1 class="mt-5 mb-3">{{ __('views.task.index.header') }}</h1>
         <div class="table-responsive">
             <div class='d-flex'>
                 <div>
                     {{ Form::open(['url' => route('tasks.index'), 'class' => 'form-inline', 'method' => 'GET']) }}
-                        {{ Form::select("filter[created_by_id]", $users, $filter['created_by_id'] ?? null, ['placeholder' => __('messages.creator'), 'class' => 'form-control mr-2', 'style' => 'width: 150px;']) }}
-                        {{ Form::select("filter[assigned_to_id]", $users, $filter['assigned_to_id'] ?? null, ['placeholder' => __('messages.assignee'), 'class' => 'form-control mr-2', 'style' => 'width: 150px;']) }}
-                        {{ Form::select("filter[status_id]", $statuses, $filter['status_id'] ?? null, ['placeholder' => __('messages.status'), 'class' => 'form-control mr-2', 'style' => 'width: 150px;']) }}
-                        {{ Form::hidden("label", $labelFilter) }}
-                        {{ Form::submit(__('messages.apply'), ['class' => 'btn btn-outline-primary text-uppercase mr-2']) }}
-                        <a class="btn btn-outline-primary text-uppercase mr-2" href="{{ route('tasks.index') }}">{{__('messages.clear')}}</a>
+                        {{ Form::select("filter[created_by_id]", $users, $filter['created_by_id'] ?? null, ['placeholder' => __('views.task.index.creator'), 'class' => 'form-control mr-2', 'style' => 'width: 150px;']) }}
+                        {{ Form::select("filter[assigned_to_id]", $users, $filter['assigned_to_id'] ?? null, ['placeholder' => __('views.task.index.assignee'), 'class' => 'form-control mr-2', 'style' => 'width: 150px;']) }}
+                        {{ Form::select("filter[status_id]", $statuses, $filter['status_id'] ?? null, ['placeholder' => __('views.task.index.status'), 'class' => 'form-control mr-2', 'style' => 'width: 150px;']) }}
+                        {{ Form::hidden("filter[label_id]", $filter['label_id'] ?? null) }}
+                        {{ Form::submit(__('views.task.index.apply'), ['class' => 'btn btn-outline-primary text-uppercase mr-2']) }}
+                        <a class="btn btn-outline-primary text-uppercase mr-2" href="{{ route('tasks.index') }}">{{__('views.task.index.clear')}}</a>
                     {{ Form::close() }}
-                   
                 </div>
-
             @auth
-                <a class="btn btn-primary text-uppercase mb-3 ml-auto" href="{{ route('tasks.create') }}">{{__('messages.addNew')}}</a>
+                <a class="btn btn-primary text-uppercase mb-3 ml-auto" href="{{ route('tasks.create') }}">{{__('views.task.index.new')}}</a>
             @endauth
             </div>
 
             <table class="table mt-2">
                 <tr>
-                    <th>{{__('messages.id')}}</th>
-                    <th>{{__('messages.name')}}</th>
-                    <th>{{__('messages.status')}}</th>
-                    <th>{{__('messages.creator')}}</th>
-                    <th>{{__('messages.assignee')}}</th>
-                    <th>{{__('messages.createdAt')}}</th>
+                    <th>{{__('views.task.index.id')}}</th>
+                    <th>{{__('views.task.index.name')}}</th>
+                    <th>{{__('views.task.index.status')}}</th>
+                    <th>{{__('views.task.index.creator')}}</th>
+                    <th>{{__('views.task.index.assignee')}}</th>
+                    <th>{{__('views.task.index.created')}}</th>
                     @auth
-                        <th class='text-center'>{{__('messages.actions')}}</th>
+                        <th class='text-center'>{{__('views.task.index.actions')}}</th>
                     @endauth
                 </tr>
                 @foreach($tasks as $task)
@@ -42,25 +40,21 @@
                             <a class="btn btn-link" href="{{ route('tasks.show', $task->id) }}"> {{ $task->name}} </a>
                             </div>
                             <div class="d-inline-block">
-                                <a class="badge badge-{{ $task->label_style }}" href="{{ route('tasks.index') }}?label={{ $task->label_id }}{{ $filterStatusBar }}"> {{ $task->label_name }} </a>   
+                                <a class="badge badge-{{ $task->label }}" href="{{ route('tasks.index') }}?{{ $filterStatusBar }}&filter%5Blabel_id%5D={{ $task->label_id }}"> {{ $task->label }} </a>   
                             </div>
                         </td>
-                        <td> {{ $task->status_name }}</td>
-                        <td>{{ $task->created_by_name}}</td>
-                        <td>{{ $task->assigned_to_name ?? ''}}</td>
+                        <td> {{ $task->status }}</td>
+                        <td>{{ $task->createdBy}}</td>
+                        <td>{{ $task->assignedTo ?? ''}}</td>
                         <td>{{ $task->created_at}} </td>
                         <td class='text-center'>
-                            @can('update', $task)
-                                <div class="d-inline-block">
-                                    <a class="btn btn-sm btn-secondary" href="{{ route('tasks.edit', $task->id) }}"> {{ __('messages.edit') }} </a>
-                                </div>
-                            @endcan
                             @auth
-                                <div class="d-inline-block">
-                                    {{ Form::open(['url' => route('tasks.destroy', $task->id), 'method' => 'DELETE']) }}
-                                        {{ Form::submit(__('messages.delete'), ['class' => 'btn btn-sm btn-secondary', 'data-confirm' => __('messages.areYouSure'), 'rel' => "nofollow"]) }}
-                                    {{ Form::close() }}
-                                </div>
+                                @can('update', $task)
+                                    <x-link name="{{ __('views.task.index.edit') }}" route="{{ route('tasks.edit', $task->id) }}" class="btn btn-sm btn-secondary"/>
+                                @endcan
+                                @can('delete', $task)
+                                    <x-delete-button name="{{ __('views.task.index.remove') }}" route="{{ route('tasks.destroy', $task->id) }}" class="btn btn-sm btn-secondary"/>
+                                @endcan
                             @endauth
                         </td>
                     </tr>

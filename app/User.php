@@ -44,6 +44,11 @@ class User extends Authenticatable
 
     public function comments()
     {
-        return $this->hasMany(__NAMESPACE__ . '\Comment', 'created_by_id');
+        return $this->hasMany(__NAMESPACE__ . '\Task\Comment', 'created_by_id');
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }

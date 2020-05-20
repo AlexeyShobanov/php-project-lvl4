@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', __('messages.taskManager')) }}</title>
+    <title>{{ config('app.name', __('views.layouts.taskManager')) }}</title>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <!-- Fonts -->
@@ -18,7 +18,7 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark"> 
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', __('messages.taskManager')) }}
+                    {{ config('app.name', __('views.layouts.taskManager')) }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -28,13 +28,13 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('tasks')) ? 'active' : '' }}" href="{{ route('tasks.index') }}">{{__('messages.task')}}</a>
+                            <a class="nav-link {{ (request()->is('tasks')) ? 'active' : '' }}" href="{{ route('tasks.index') }}">{{__('views.layouts.task')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('task_statuses')) ? 'active' : '' }}" href="{{ route('task_statuses.index') }}">{{__('messages.taskStatuses')}}</a>
+                            <a class="nav-link {{ (request()->is('task_statuses')) ? 'active' : '' }}" href="{{ route('task_statuses.index') }}">{{__('views.layouts.taskStatuses')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('labels')) ? 'active' : '' }}" href="{{ route('labels.index') }}">{{__('messages.labels')}}</a>
+                            <a class="nav-link {{ (request()->is('labels')) ? 'active' : '' }}" href="{{ route('labels.index') }}">{{__('views.layouts.labels')}}</a>
                         </li>
                     </ul>
 

@@ -4,28 +4,12 @@
     <div class="jumbotron-fluid bg-light">
         <div class="container py-4">
             <div class="col-12 col-md-10 col-lg-8 mx-auto text-left text-dark">
-                <h1  class="mb-5">{{__('messages.addNewLabel')}}</h1>
-                {{ Form::open(['url' => route('labels.store'), 'class' => 'justify-content-center']) }}
-                <div class="form-group">
-                    <label for="name">{{__('messages.name')}}</label>
-                    {{ Form::text('name', request()->name, ['class' => 'form-control form-control-lg' . ($errors->has('name') ? ' is-invalid' : '')]) }}
-                    @error('name')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label for="description">{{__('messages.description')}}</label>
-                    {{ Form::textarea('description', request()->description, ['class' => 'form-control form-control-lg']) }}
-                </div>
-                <div class="form-group">
-                    <label for="color_id">{{__('messages.color')}}</label>
-                    {{ Form::select('color_id', $colors, null, ['placeholder' => __('messages.color'), 'class' => 'form-control form-control-lg']) }}
-                </div>
-                <div class="form-group">
-                    {{ Form::submit(__('messages.create'), ['class' => 'btn btn-primary px-5 text-uppercase']) }}
-                </div> 
+                <h1  class="mb-5">{{__('views.label.create.header')}}</h1>
+                {{ Form::model($label, ['url' => route('labels.store'), 'class' => 'justify-content-center']) }}
+                    <x-form-required-text-field label="{{ __('views.label.create.name') }}" name="name" value="{{ $label->name }}" message="{{ $message ?? '' }}" class="form-control form-control-lg"/>
+                    <x-form-text-aria-field label="{{ __('views.label.create.description') }}" name="description" value="{{ $label->description }}" class="form-control form-control-lg"/>
+                    <x-form-drop-down-list label="{{ __('views.label.create.color') }}" name="color_id" value="{{ $label->color_id }}" placeholder="{{ __('views.label.create.color') }}" :dataList="$colors" class="form-control form-control-lg"/>
+                    <x-form-submit-button name="{{ __('views.label.create.create') }}" class="btn btn-primary px-5 text-uppercase"/>
                 {{ Form::close() }}
             </div>
         </div>

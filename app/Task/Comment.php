@@ -12,11 +12,11 @@ class Comment extends Model
 
     public function task()
     {
-        return $this->belongsTo(__NAMESPACE__ . '\Task');
+        return $this->belongsTo('App\Task');
     }
 
     public function createdBy()
     {
-        return $this->belongsTo(__NAMESPACE__ . '\User', 'created_by_id');
+        return $this->belongsTo('App\User', 'created_by_id');
     }
 }

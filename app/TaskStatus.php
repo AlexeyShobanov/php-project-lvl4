@@ -15,4 +15,9 @@ class TaskStatus extends Model
     {
         return $this->hasMany(__NAMESPACE__ . '\Task', 'status_id');
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
