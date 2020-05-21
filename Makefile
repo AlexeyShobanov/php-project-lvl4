@@ -30,3 +30,9 @@ lint:
 
 lint-fix:
 	composer phpcbf app/Http/Controllers tests
+
+logs:
+	tail -f storage/logs/laravel.log
+
+production-logs:
+	heroku logs -t
