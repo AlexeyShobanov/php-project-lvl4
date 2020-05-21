@@ -2,7 +2,6 @@ setup:
 	composer install
 	cp -n .env.example .env
 	php artisan key:gen --ansi
-	cp .env .env.testing
 	touch database/database.sqlite || true
 	php artisan migrate
 	php artisan db:seed --force
