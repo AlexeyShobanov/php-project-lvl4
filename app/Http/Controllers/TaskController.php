@@ -15,6 +15,7 @@ use Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskController extends Controller
 {
@@ -37,8 +38,12 @@ class TaskController extends Controller
         $statuses = TaskStatus::select('id', 'name')->get()->pluck('name', 'id')->all();
         $users = User::select('id', 'name')->get()->pluck('name', 'id')->all();
         $tasks = QueryBuilder::for(Task::class)
-            ->with('label.color')
-            ->allowedFilters(['created_by_id', 'assigned_to_id', 'status_id', 'label_id'])
+            ->allowedFilters([
+                AllowedFilter::exact('created_by_id'),
+                AllowedFilter::exact('assigned_to_id'),
+                AllowedFilter::exact('status_id'),
+                AllowedFilter::exact('label_id')
+            ])
             ->paginate(self::PAGINATE_COUNT);
         return view('task.index', compact('tasks', 'statuses', 'users', 'filter', 'filterStatusBar'));
     }
