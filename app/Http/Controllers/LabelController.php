@@ -19,15 +19,15 @@ class LabelController extends Controller
 
     public function create()
     {
-        $this->authorize('create', Label::class);
+        $this->authorize(Label::class);
         $label = new Label();
-        $colors = Color::select('id', 'name')->get()->pluck('name', 'id')->all();
+        $colors = Color::pluck('name', 'id');
         return view('label.create', compact('label', 'colors'));
     }
 
     public function store(Request $request)
     {
-        $this->authorize('create', Label::class);
+        $this->authorize(Label::class);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255'
         ], self::MESSAGES);
@@ -59,15 +59,15 @@ class LabelController extends Controller
     
     public function edit(Label $label)
     {
-        $this->authorize('update', $label);
-        $colors = Color::select('id', 'name')->get()->pluck('name', 'id')->all();
+        $this->authorize($label);
+        $colors = Color::pluck('name', 'id');
         return view('label.edit', compact('colors', 'label'));
     }
 
     
     public function update(Request $request, Label $label)
     {
-        $this->authorize('update', $label);
+        $this->authorize($label);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255'
         ], self::MESSAGES);
@@ -87,7 +87,7 @@ class LabelController extends Controller
     }
     public function destroy(Label $label)
     {
-        $this->authorize('delete', $label);
+        $this->authorize($label);
         $label->delete();
         flash(__('flash.comment.remove.success'))->success();
         return redirect()->route('labels.index');

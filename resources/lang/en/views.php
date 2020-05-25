@@ -113,7 +113,7 @@ return [
     ],
     'layouts' => [
         'taskMananger' => 'Task Manager',
-        'task' => 'Task',
+        'task' => 'Tasks',
         'taskStatuses' => 'Task Statuses',
         'labels' => 'Labels',
     ],

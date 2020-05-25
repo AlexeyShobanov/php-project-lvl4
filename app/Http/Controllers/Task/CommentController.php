@@ -16,7 +16,7 @@ class CommentController extends Controller
 {
     public function store(Request $request, Task $task)
     {
-        $this->authorize('create', Task::class);
+        $this->authorize(Task::class);
         $validator = Validator::make($request->all(), [
             'content' => 'required|string|min:3'
         ], self::MESSAGES);
@@ -38,14 +38,14 @@ class CommentController extends Controller
 
     public function edit(Task $task, Comment $comment)
     {
-        $this->authorize('update', $comment);
+        $this->authorize($comment);
         $status = TaskStatus::findOrFail($comment->id);
         return view('comment.edit', compact('comment', 'task'));
     }
 
     public function update(Request $request, Task $task, Comment $comment)
     {
-        $this->authorize('update', $comment);
+        $this->authorize($comment);
         $validator = Validator::make($request->all(), [
             'content' => 'required|string|min:3'
         ], self::MESSAGES);
@@ -66,7 +66,7 @@ class CommentController extends Controller
 
     public function destroy(Task $task, Comment $comment)
     {
-        $this->authorize('delete', $comment);
+        $this->authorize($comment);
         $comment->delete();
         flash(__('flash.comment.remove.success'))->success();
         return redirect()

@@ -6,7 +6,7 @@
         <h1 class="mt-5 mb-3">Task: {{ $task->name }}</h1>
         <p class="lead">{{ $task->description }}</p>
         @auth
-            {{ Form::open(['url' => route('tasks.comments.store', $task->id)]) }}
+            {{ Form::open(['url' => route('tasks.comments.store', $task)]) }}
                 <x-form-required-text-aria-field label="{{ __('views.task.show.comment') }}" name="content" message="{{ $message ?? '' }}" class="form-control w-50"/>
                 <x-form-submit-button name="{{ __('views.task.show.create') }}" class="btn btn-primary px-5 text-uppercase"/>
             {{ Form::close() }}
@@ -23,10 +23,10 @@
                         @auth
                             <td class='text-center'>
                                 @can('update', $comment)
-                                    <x-link name="{{ __('views.task.show.edit') }}" route="{{ route('tasks.comments.edit', [$task, $comment->id]) }}" class="btn btn-sm btn-secondary"/>
+                                    <x-link name="{{ __('views.task.show.edit') }}" route="{{ route('tasks.comments.edit', [$task, $comment]) }}" class="btn btn-sm btn-secondary"/>
                                 @endcan
                                 @can('delete', $comment)
-                                    <x-delete-button name="{{ __('views.task.show.remove') }}" route="{{ route('tasks.comments.destroy', [$task, $comment->id]) }}" class="btn btn-sm btn-secondary"/>
+                                    <x-delete-button name="{{ __('views.task.show.remove') }}" route="{{ route('tasks.comments.destroy', [$task, $comment]) }}" class="btn btn-sm btn-secondary"/>
                                 @endcan
                             </td>
                         @endauth

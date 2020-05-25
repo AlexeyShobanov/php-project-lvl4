@@ -23,8 +23,8 @@
                         <td>{{ $status->created_at ?? ''}} </td>
                         <td class='text-center'>
                             @auth
-                                <x-link name="{{ __('views.task_status.index.edit') }}" route="{{ route('task_statuses.edit', $status->id) }}" class="btn btn-sm btn-secondary"/>
-                                <x-delete-button name="{{ __('views.task_status.index.remove') }}" route="{{ route('task_statuses.destroy', $status->id) }}" class="btn btn-sm btn-secondary"/>
+                                <x-link name="{{ __('views.task_status.index.edit') }}" route="{{ route('task_statuses.edit', $status) }}" class="btn btn-sm btn-secondary"/>
+                                <x-delete-button name="{{ __('views.task_status.index.remove') }}" route="{{ route('task_statuses.destroy', $status) }}" class="btn btn-sm btn-secondary"/>
                             @endauth
                         </td>
                     </tr>

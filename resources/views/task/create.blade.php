@@ -10,7 +10,7 @@
                     <x-form-required-text-field label="{{ __('views.task.create.name') }}" name="name" value="{{ $task->name }}" message="{{ $message ?? '' }}" class="form-control form-control-lg"/>
                     <x-form-drop-down-list label="{{ __('views.task.create.label') }}" name="label_id" value="{{ $task->label_id }}" placeholder="{{ __('views.task.create.label') }}" :dataList="$labels" class="form-control form-control-lg"/>
                     <x-form-text-aria-field label="{{ __('views.task.create.description') }}" name="description" value="{{ $task->description }}" class="form-control form-control-lg"/>
-                    <x-form-required-drop-down-list label="{{ __('views.task.create.status') }}" name="status_id" value="{{ $task->status_id }}" placeholder="{{ __('views.task.create.status') }}" message="{{ $message ?? '' }}" :dataList="$statuses" class="form-control form-control-lg"/>
+                    <x-form-required-drop-down-list label="{{ __('views.task.create.status') }}" name="status_id" value="{{ $defaultStatus }}" placeholder="{{ __('views.task.create.status') }}" message="{{ $message ?? '' }}" :dataList="$statuses" class="form-control form-control-lg"/>
                     <x-form-drop-down-list label="{{ __('views.task.create.assignee') }}" name="assigned_to_id" value="{{ $task->assigned_to_id }}" placeholder="{{ __('views.task.create.assignee') }}" :dataList="$users" class="form-control form-control-lg"/>
                     <x-form-submit-button name="{{ __('views.task.create.create') }}" class="btn btn-primary px-5 text-uppercase"/>
                 {{ Form::close() }}

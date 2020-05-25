@@ -5,7 +5,7 @@
         <div class="container py-4">
                 <div class="col-12 col-md-10 col-lg-8 mx-auto text-left text-dark">
                      <h1  class="mb-5">{{__('views.task.edit.header')}}</h1>    
-                    {{ Form::model($task, ['url' => route('tasks.update', $task->id), 'class' => 'justify-content-center', 'method' => 'PATCH']) }}
+                    {{ Form::model($task, ['url' => route('tasks.update', $task), 'class' => 'justify-content-center', 'method' => 'PATCH']) }}
                         <x-form-required-text-field label="{{ __('views.task.edit.name') }}" name="name" value="{{ $task->name }}" message="{{ $message ?? '' }}" class="form-control form-control-lg"/>
                         <x-form-drop-down-list label="{{ __('views.task.edit.label') }}" name="label_id" value="{{ $task->label_id }}" placeholder="{{ __('views.task.edit.label') }}" :dataList="$labels" class="form-control form-control-lg"/>
                         <x-form-text-aria-field label="{{ __('views.task.edit.description') }}" name="description" value="{{ $task->description }}" class="form-control form-control-lg"/>

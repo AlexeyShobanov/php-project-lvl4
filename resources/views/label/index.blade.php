@@ -27,8 +27,8 @@
                         <td>{{ $label->created_at ?? ''}} </td>
                         <td class='text-center'>
                             @auth
-                                <x-link name="{{ __('views.label.index.edit') }}" route="{{ route('labels.edit', $label->id) }}" class="btn btn-sm btn-secondary"/>
-                                <x-delete-button name="{{ __('views.label.index.remove') }}" route="{{ route('labels.destroy', $label->id) }}" class="btn btn-sm btn-secondary"/>
+                                <x-link name="{{ __('views.label.index.edit') }}" route="{{ route('labels.edit', $label) }}" class="btn btn-sm btn-secondary"/>
+                                <x-delete-button name="{{ __('views.label.index.remove') }}" route="{{ route('labels.destroy', $label) }}" class="btn btn-sm btn-secondary"/>
                             @endauth
                         </td>
                     </tr>

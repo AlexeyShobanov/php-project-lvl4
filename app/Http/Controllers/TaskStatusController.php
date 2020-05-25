@@ -18,14 +18,14 @@ class TaskStatusController extends Controller
 
     public function create()
     {
-        $this->authorize('create', TaskStatus::class);
+        $this->authorize(TaskStatus::class);
         $status = new TaskStatus();
         return view('task_status.create', compact('status'));
     }
 
     public function store(Request $request)
     {
-        $this->authorize('create', TaskStatus::class);
+        $this->authorize(TaskStatus::class);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255'
         ], self::MESSAGES);
@@ -51,14 +51,14 @@ class TaskStatusController extends Controller
 
     public function edit(TaskStatus $taskStatus)
     {
-        $this->authorize('update', $taskStatus);
+        $this->authorize($taskStatus);
         $status = TaskStatus::findOrFail($taskStatus->id);
         return view('task_status.edit', compact('status'));
     }
 
     public function update(Request $request, TaskStatus $taskStatus)
     {
-        $this->authorize('update', $taskStatus);
+        $this->authorize($taskStatus);
         $status = TaskStatus::findOrFail($taskStatus->id);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255'
@@ -80,7 +80,7 @@ class TaskStatusController extends Controller
 
     public function destroy(TaskStatus $taskStatus)
     {
-        $this->authorize('delete', $taskStatus);
+        $this->authorize($taskStatus);
         $status = TaskStatus::findOrFail($taskStatus->id);
         $status->delete();
         flash(__('flash.taskStatus.remove.success'))->success();

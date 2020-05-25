@@ -37,7 +37,7 @@
                         <td>{{ $task->id }}</td>
                         <td>
                             <div class="d-inline-block">
-                            <a class="btn btn-link" href="{{ route('tasks.show', $task->id) }}"> {{ $task->name}} </a>
+                            <a class="btn btn-link" href="{{ route('tasks.show', $task) }}"> {{ $task->name}} </a>
                             </div>
                             <div class="d-inline-block">
                                 <a class="badge badge-{{ $task->label ? $task->label->color->btn_style : '' }}" href="{{ route('tasks.index') }}?{{ $filterStatusBar }}&filter%5Blabel_id%5D={{ $task->label_id }}"> {{ $task->label }} </a>   
@@ -50,10 +50,10 @@
                         <td class='text-center'>
                             @auth
                                 @can('update', $task)
-                                    <x-link name="{{ __('views.task.index.edit') }}" route="{{ route('tasks.edit', $task->id) }}" class="btn btn-sm btn-secondary"/>
+                                    <x-link name="{{ __('views.task.index.edit') }}" route="{{ route('tasks.edit', $task) }}" class="btn btn-sm btn-secondary"/>
                                 @endcan
                                 @can('delete', $task)
-                                    <x-delete-button name="{{ __('views.task.index.remove') }}" route="{{ route('tasks.destroy', $task->id) }}" class="btn btn-sm btn-secondary"/>
+                                    <x-delete-button name="{{ __('views.task.index.remove') }}" route="{{ route('tasks.destroy', $task) }}" class="btn btn-sm btn-secondary"/>
                                 @endcan
                             @endauth
                         </td>

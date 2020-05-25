@@ -19,6 +19,8 @@ use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskController extends Controller
 {
+    private const DEFAULT_STATUS = 'New';
+
     public function index(Request $request)
     {
         $data = $request->all();
@@ -35,8 +37,8 @@ class TaskController extends Controller
                 [])
             );
         }
-        $statuses = TaskStatus::select('id', 'name')->get()->pluck('name', 'id')->all();
-        $users = User::select('id', 'name')->get()->pluck('name', 'id')->all();
+        $statuses = TaskStatus::pluck('name', 'id');
+        $users = User::pluck('name', 'id');
         $tasks = QueryBuilder::for(Task::class)
             ->allowedFilters([
                 AllowedFilter::exact('created_by_id'),
@@ -50,18 +52,18 @@ class TaskController extends Controller
 
     public function create()
     {
-        $this->authorize('create', Task::class);
+        $this->authorize(Task::class);
         $task = new Task();
-        $statuses = TaskStatus::select('id', 'name')->get()->pluck('name', 'id')->all();
-        $users = User::select('id', 'name')->get()->pluck('name', 'id')->all();
-        $labels = Label::select('id', 'name')->get()->pluck('name', 'id')->all();
-        $defaultStatus = array_search(__('messages.new'), $statuses) ?? null;
+        $statuses = TaskStatus::pluck('name', 'id');
+        $users = User::pluck('name', 'id');
+        $labels = Label::pluck('name', 'id');
+        $defaultStatus = $statuses->search(self::DEFAULT_STATUS) ?? null;
         return view('task.create', compact('task', 'statuses', 'users', 'labels', 'defaultStatus'));
     }
 
     public function store(Request $request)
     {
-        $this->authorize('create', Task::class);
+        $this->authorize(Task::class);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'status_id' => 'required'
@@ -89,16 +91,16 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
-        $this->authorize('update', $task);
-        $statuses = TaskStatus::select('id', 'name')->get()->pluck('name', 'id')->all();
-        $users = User::select('id', 'name')->get()->pluck('name', 'id')->all();
-        $labels = Label::select('id', 'name')->get()->pluck('name', 'id')->all();
+        $this->authorize($task);
+        $statuses = TaskStatus::pluck('name', 'id');
+        $users = User::pluck('name', 'id');
+        $labels = Label::pluck('name', 'id');
         return view('task.edit', compact('task', 'statuses', 'users', 'labels'));
     }
 
     public function update(Request $request, Task $task)
     {
-        $this->authorize('update', $task);
+        $this->authorize($task);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'status_id' => 'required'
@@ -120,7 +122,7 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        $this->authorize('delete', $task);
+        $this->authorize($task);
         $task->delete();
         flash(__('flash.task.remove.success'))->success();
         return redirect()
