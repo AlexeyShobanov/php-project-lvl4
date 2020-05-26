@@ -36,7 +36,7 @@ class TaskController extends Controller
                 AllowedFilter::exact('label_id')
             ])
             ->paginate(self::PAGINATE_COUNT);
-        return view('task.index', compact('tasks', 'statuses', 'users', 'filter', 'labels', 'filterStatusBar'));
+        return view('task.index', compact('tasks', 'statuses', 'users', 'labels', 'filter'));
     }
 
     public function create()
