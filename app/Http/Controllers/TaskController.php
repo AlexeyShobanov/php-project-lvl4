@@ -25,20 +25,9 @@ class TaskController extends Controller
     {
         $data = $request->all();
         $filter = $data['filter'] ?? [];
-        $filterStatusBar = '';
-        if ($filter) {
-            $filterStatusBar = implode(
-                '&',
-                array_reduce(array_keys($filter), function ($acc, $filterKey) use ($filter) {
-                    return $filterKey != 'label_id' ?
-                    array_merge($acc, ["filter%5B{$filterKey}%5D={$filter[$filterKey]}"]) :
-                    $acc;
-                },
-                [])
-            );
-        }
         $statuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
+        $labels = Label::pluck('name', 'id');
         $tasks = QueryBuilder::for(Task::class)
             ->allowedFilters([
                 AllowedFilter::exact('created_by_id'),
@@ -47,7 +36,7 @@ class TaskController extends Controller
                 AllowedFilter::exact('label_id')
             ])
             ->paginate(self::PAGINATE_COUNT);
-        return view('task.index', compact('tasks', 'statuses', 'users', 'filter', 'filterStatusBar'));
+        return view('task.index', compact('tasks', 'statuses', 'users', 'filter', 'labels', 'filterStatusBar'));
     }
 
     public function create()

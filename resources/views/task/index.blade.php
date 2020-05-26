@@ -10,7 +10,7 @@
                         {{ Form::select("filter[created_by_id]", $users, $filter['created_by_id'] ?? null, ['placeholder' => __('views.task.index.creator'), 'class' => 'form-control mr-2', 'style' => 'width: 150px;']) }}
                         {{ Form::select("filter[assigned_to_id]", $users, $filter['assigned_to_id'] ?? null, ['placeholder' => __('views.task.index.assignee'), 'class' => 'form-control mr-2', 'style' => 'width: 150px;']) }}
                         {{ Form::select("filter[status_id]", $statuses, $filter['status_id'] ?? null, ['placeholder' => __('views.task.index.status'), 'class' => 'form-control mr-2', 'style' => 'width: 150px;']) }}
-                        {{ Form::hidden("filter[label_id]", $filter['label_id'] ?? null) }}
+                        {{ Form::select("filter[label_id]", $labels, $filter['label_id'] ?? null, ['placeholder' => __('views.task.index.label'), 'class' => 'form-control mr-2', 'style' => 'width: 150px;']) }}
                         {{ Form::submit(__('views.task.index.apply'), ['class' => 'btn btn-outline-primary text-uppercase mr-2']) }}
                         <a class="btn btn-outline-primary text-uppercase mr-2" href="{{ route('tasks.index') }}">{{__('views.task.index.clear')}}</a>
                     {{ Form::close() }}
@@ -40,7 +40,7 @@
                             <a class="btn btn-link" href="{{ route('tasks.show', $task) }}"> {{ $task->name}} </a>
                             </div>
                             <div class="d-inline-block">
-                                <a class="badge badge-{{ $task->label ? $task->label->color->btn_style : '' }}" href="{{ route('tasks.index') }}?{{ $filterStatusBar }}&filter%5Blabel_id%5D={{ $task->label_id }}"> {{ $task->label }} </a>   
+                                <span class="badge badge-{{ $task->label ? $task->label->color->btn_style : '' }}"> {{ $task->label }} </span>   
                             </div>
                         </td>
                         <td> {{ $task->status }}</td>

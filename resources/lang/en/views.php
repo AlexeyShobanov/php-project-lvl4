@@ -29,6 +29,7 @@ return [
             'id' => 'ID',
             'name' => 'Name',
             'status' => 'Status',
+            'label' => 'Label',
             'creator' => 'Creator',
             'assignee' => 'Assignee',
             'created' => 'Created At',
