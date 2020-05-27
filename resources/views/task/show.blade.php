@@ -32,7 +32,6 @@
                         @endauth
                     </tr>
                 @endforeach
-                {{ $comments->links() }}
             </table>
     </div>
 

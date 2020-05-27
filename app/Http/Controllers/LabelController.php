@@ -28,34 +28,27 @@ class LabelController extends Controller
     public function store(Request $request)
     {
         $this->authorize(Label::class);
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255'
-        ], self::MESSAGES);
-        if ($validator->fails()) {
-            flash(__('flash.commonPhrases.wrongInput'))->error();
-            return redirect()
-                ->route('labels.create')
-                ->withErrors($validator)
-                ->withInput();
-        }
-        $label = $validator->valid();
-        $existingLabel = Label::where('name', $label['name'])->first();
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'color_id' => 'nullable|integer'
+        ]);
+        $existingLabel = Label::where('name', $validatedData['name'])->first();
         if ($existingLabel) {
             flash(__('flash.label.create.double'))->warning();
             return redirect()
             ->route('labels.index');
         }
-        if (is_null($label['color_id'])) {
+        if (is_null($validatedData['color_id'])) {
             $randomColor = Color::all()
                 ->random();
-            $label['color_id'] = $randomColor->id;
+            $validatedData['color_id'] = $randomColor->id;
         }
-        Label::create($label);
+        Label::create($validatedData);
         flash(__('flash.label.create.success'))->success();
         return redirect()
             ->route('labels.index');
     }
-
     
     public function edit(Label $label)
     {
@@ -63,28 +56,22 @@ class LabelController extends Controller
         $colors = Color::pluck('name', 'id');
         return view('label.edit', compact('colors', 'label'));
     }
-
     
     public function update(Request $request, Label $label)
     {
         $this->authorize($label);
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255'
-        ], self::MESSAGES);
-        if ($validator->fails()) {
-            flash(__('flash.commonPhrases.wrongInput'))->error();
-            return redirect()
-                ->route('labels.edit', ['labels' => request()->all()])
-                ->withErrors($validator)
-                ->withInput();
-        }
-        $data = $validator->valid();
-        $label->fill($data)
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255|unique:labels',
+            'description' => 'nullable|string',
+            'color_id' => 'nullable|integer'
+        ]);
+        $label->fill($validatedData)
             ->save();
         flash(__('flash.label.update.success'))->success();
         return redirect()
             ->route('labels.index');
     }
+
     public function destroy(Label $label)
     {
         $this->authorize($label);

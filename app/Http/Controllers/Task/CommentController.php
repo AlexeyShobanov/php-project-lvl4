@@ -17,19 +17,11 @@ class CommentController extends Controller
     public function store(Request $request, Task $task)
     {
         $this->authorize(Task::class);
-        $validator = Validator::make($request->all(), [
+        $validatedData = $request->validate([
             'content' => 'required|string|min:3'
-        ], self::MESSAGES);
-        if ($validator->fails()) {
-            flash(__('flash.commonPhrases.wrongInput'))->error();
-            return redirect()
-                ->route('tasks.show', compact('task'))
-                ->withErrors($validator)
-                ->withInput();
-        }
-        $comment = $validator->valid();
+        ]);
         $created_by_id = Auth::user()->id;
-        Task\Comment::create(array_merge($comment, ['created_by_id' => $created_by_id], ['task_id' => $task->id]));
+        Comment::create(array_merge($validatedData, ['created_by_id' => $created_by_id], ['task_id' => $task->id]));
         flash(__('flash.comment.create.success'))->success();
         return redirect()
             ->route('tasks.show', compact('task'));
@@ -46,19 +38,11 @@ class CommentController extends Controller
     public function update(Request $request, Task $task, Comment $comment)
     {
         $this->authorize($comment);
-        $validator = Validator::make($request->all(), [
+        $validatedData = $request->validate([
             'content' => 'required|string|min:3'
-        ], self::MESSAGES);
-        if ($validator->fails()) {
-            flash(__('flash.commonPhrases.wrongInput'))->error();
-            return redirect()
-                ->route('comments.edit', compact('comment', 'task'))
-                ->withErrors($validator)
-                ->withInput();
-        }
-        $content = $validator->valid()['content'];
-        $comment->content = $content;
-        $comment->save();
+        ]);
+        $comment->fill($validatedData)
+            ->save();
         flash(__('flash.comment.update.success'))->success();
         return redirect()
             ->route('tasks.show', compact('task'));

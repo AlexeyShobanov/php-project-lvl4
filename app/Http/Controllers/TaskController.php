@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Task;
 use App\User;
 use App\Label;
-use App\Color;
 use App\Task\Comment;
 use App\TaskStatus;
 use Illuminate\Http\Request;
@@ -53,20 +52,15 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $this->authorize(Task::class);
-        $validator = Validator::make($request->all(), [
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'status_id' => 'required'
-        ], self::MESSAGES);
-        if ($validator->fails()) {
-            flash(__('flash.commonPhrases.wrongInput'))->error();
-            return redirect()
-                ->route('tasks.create')
-                ->withErrors($validator)
-                ->withInput();
-        }
-        $task = $validator->valid();
+            'status_id' => 'required|integer',
+            'description' => 'nullable|string',
+            'label_id' => 'nullable|integer',
+            'assigned_to_id' => 'nullable|integer'
+        ]);
         $created_by_id = Auth::user()->id;
-        Task::create(array_merge($task, ['created_by_id' => $created_by_id]));
+        Task::create(array_merge($validatedData, ['created_by_id' => $created_by_id]));
         flash(__('flash.task.create.success'))->success();
         return redirect()
             ->route('tasks.index');
@@ -74,7 +68,7 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
-        $comments = Comment::paginate(self::PAGINATE_COUNT);
+        $comments = Comment::get()->sortByDesc('id');
         return view('task.show', compact('task', 'comments'));
     }
 
@@ -90,19 +84,14 @@ class TaskController extends Controller
     public function update(Request $request, Task $task)
     {
         $this->authorize($task);
-        $validator = Validator::make($request->all(), [
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'status_id' => 'required'
-        ], self::MESSAGES);
-        if ($validator->fails()) {
-            flash(__('flash.commonPhrases.wrongInput'))->error();
-            return redirect()
-                ->route('tasks.update')
-                ->withErrors($validator)
-                ->withInput();
-        }
-        $data = $validator->valid();
-        $task->fill($data)
+            'status_id' => 'required|integer',
+            'description' => 'nullable|string',
+            'label_id' => 'nullable|integer',
+            'assigned_to_id' => 'nullable|integer'
+        ]);
+        $task->fill($validatedData)
             ->save();
         flash(__('flash.task.update.success'))->success();
         return redirect()
