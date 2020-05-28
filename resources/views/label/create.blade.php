@@ -8,7 +8,7 @@
                 {{ Form::model($label, ['url' => route('labels.store'), 'class' => 'justify-content-center']) }}
                     <x-form-required-text-field label="{{ __('views.label.create.name') }}" name="name" value="{{ $label->name }}" message="{{ $message ?? '' }}" class="form-control form-control-lg"/>
                     <x-form-text-aria-field label="{{ __('views.label.create.description') }}" name="description" value="{{ $label->description }}" class="form-control form-control-lg"/>
-                    <x-form-drop-down-list label="{{ __('views.label.create.color') }}" name="color_id" value="{{ $label->color_id }}" placeholder="{{ __('views.label.create.color') }}" :dataList="$colors" class="form-control form-control-lg"/>
+                    <x-form-drop-down-list label="{{ __('views.label.create.color') }}" name="color_id" value="{{ $label->color_id }}" placeholder="{{ __('views.label.create.chooseColor') }}" :dataList="$colors" class="form-control form-control-lg"/>
                     <x-form-submit-button name="{{ __('views.label.create.create') }}" class="btn btn-primary px-5 text-uppercase"/>
                 {{ Form::close() }}
             </div>

@@ -43,21 +43,27 @@ return [
         'edit' => [
             'header' => 'Edit Task',
             'label' => 'Label',
+            'chooseLabel' => 'Choose labels ...',
             'name' => 'Name',
             'description' => 'Description',
             'status' => 'Status',
+            'chooseStatus' => 'Choose a status ...',
             'creator' => 'Creator',
             'assignee' => 'Assignee',
+            'chooseAssignee' => 'Choose a assignee ...',
             'update' => 'Update',
         ],
         'create' => [
             'header' => 'Add New Task',
             'label' => 'Label',
+            'chooseLabel' => 'Choose labels ...',
             'name' => 'Name',
             'description' => 'Description',
             'status' => 'Status',
+            'chooseStatus' => 'Choose a status ...',
             'creator' => 'Creator',
             'assignee' => 'Assignee',
+            'chooseAssignee' => 'Choose a assignee ...',
             'create' => 'Create',
         ],
         'show' => [
@@ -92,14 +98,16 @@ return [
             'update' => 'Update',
             'name' => 'Name',
             'description' => 'Description',
-            'color' => 'Color'
+            'color' => 'Color',
+            'chooseColor' => 'Choose color ...'
         ],
         'create' => [
             'header' => 'Add New Label',
             'create' => 'Create',
             'name' => 'Name',
             'description' => 'Description',
-            'color' => 'Color'
+            'color' => 'Color',
+            'chooseColor' => 'Choose color ...'
         ],
     ],
     'home' => [

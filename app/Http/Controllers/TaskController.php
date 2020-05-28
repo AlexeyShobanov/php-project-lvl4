@@ -22,8 +22,7 @@ class TaskController extends Controller
 
     public function index(Request $request)
     {
-        $data = $request->all();
-        $filter = $data['filter'] ?? [];
+        $filter = $request->input('filter');
         $statuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
         $labels = Label::pluck('name', 'id');
@@ -56,11 +55,14 @@ class TaskController extends Controller
             'name' => 'required|string|max:255',
             'status_id' => 'required|integer',
             'description' => 'nullable|string',
-            'label_id' => 'nullable|integer',
             'assigned_to_id' => 'nullable|integer'
         ]);
         $created_by_id = Auth::user()->id;
-        Task::create(array_merge($validatedData, ['created_by_id' => $created_by_id]));
+        $task = Task::create(array_merge($validatedData, ['created_by_id' => $created_by_id]));
+        $labels = Label::find($request->input('labels_id'));
+        if (($labels)) {
+            $task->labels()->attach($labels);
+        }
         flash(__('flash.task.create.success'))->success();
         return redirect()
             ->route('tasks.index');
@@ -78,7 +80,8 @@ class TaskController extends Controller
         $statuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
         $labels = Label::pluck('name', 'id');
-        return view('task.edit', compact('task', 'statuses', 'users', 'labels'));
+        $selectedLabels = $task->labels->pluck('id')->all();
+        return view('task.edit', compact('task', 'statuses', 'users', 'labels', 'selectedLabels'));
     }
 
     public function update(Request $request, Task $task)
@@ -88,11 +91,20 @@ class TaskController extends Controller
             'name' => 'required|string|max:255',
             'status_id' => 'required|integer',
             'description' => 'nullable|string',
-            'label_id' => 'nullable|integer',
             'assigned_to_id' => 'nullable|integer'
         ]);
         $task->fill($validatedData)
             ->save();
+        $labels = Label::find($request->input('labels_id'));
+        $savedLabels = $task->labels;
+        $outdatedLabels = $savedLabels ? $savedLabels->diffAssoc($labels) : null;
+        if (($outdatedLabels)) {
+            $task->labels()->detach($outdatedLabels);
+        }
+        $newLabels = $labels ? $labels->diffAssoc($savedLabels) : null;
+        if (($newLabels)) {
+            $task->labels()->attach($newLabels);
+        }
         flash(__('flash.task.update.success'))->success();
         return redirect()
             ->route('tasks.index');

@@ -15,7 +15,7 @@ class Label extends Model
 
     public function tasks()
     {
-        return $this->hasMany(__NAMESPACE__ . '\Task');
+        return $this->belongsToMany(__NAMESPACE__ . '\Task');
     }
 
     public function color()
