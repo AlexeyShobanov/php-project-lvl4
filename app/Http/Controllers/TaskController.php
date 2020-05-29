@@ -33,6 +33,7 @@ class TaskController extends Controller
                 AllowedFilter::exact('status_id'),
                 AllowedFilter::exact('label_id')
             ])
+            ->orderBy('created_at', 'desc')
             ->paginate(self::PAGINATE_COUNT);
         return view('task.index', compact('tasks', 'statuses', 'users', 'labels', 'filter'));
     }
@@ -70,7 +71,10 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
-        $comments = Comment::get()->sortByDesc('id');
+        //$comments = Comment::get()->sortByDesc('id');
+        $comments = $task->comments()
+            ->orderBy('created_at', 'desc')
+            ->paginate(self::PAGINATE_COUNT);
         return view('task.show', compact('task', 'comments'));
     }
 

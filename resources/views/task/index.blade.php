@@ -60,7 +60,7 @@
                         </td>
                     </tr>
                 @endforeach
-                {{ $tasks->links() }}
+                {{ $tasks->withQueryString()->links() }}
             </table>
         </div>
     </div>
