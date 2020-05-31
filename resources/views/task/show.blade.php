@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    
     <div class="container-lg">
         <h1 class="mt-5 mb-3">Task: {{ $task->name }}</h1>
         <p class="lead">{{ $task->description }}</p>
@@ -11,9 +10,10 @@
                 <x-form-submit-button name="{{ __('views.task.show.create') }}" class="btn btn-primary px-5 text-uppercase"/>
             {{ Form::close() }}
         @endauth
-    <hr>
-    <h3 class="mt-3 mb-1">{{__('views.task.show.comments')}}</h3>
-    <table class="table mt-2">
+        <hr>
+        <h3 class="mt-3 mb-1">{{__('views.task.show.comments')}}</h3>
+        <div class="container">
+            <table class="table mt-2">
                 @foreach($comments as $comment)
                     <tr>
                         <td>{{ $comment->id }}</td>
@@ -33,5 +33,7 @@
                     </tr>
                 @endforeach
             </table>
+        </div>
+        {{ $comments->links() }}
     </div>
 @endsection 

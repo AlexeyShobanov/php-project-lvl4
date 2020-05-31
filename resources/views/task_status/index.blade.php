@@ -2,13 +2,12 @@
 
 @section('content')
 <div class="container-lg">
-        <h1 class="mt-5 mb-3">{{ __('views.task_status.index.header') }}</h1>
-        <div class="table-responsive">
-
-            @auth
-                <x-link name="{{ __('views.task_status.index.new') }}" route="{{ route('task_statuses.create') }}" class="btn btn-primary text-uppercase"/>
-            @endauth
-
+    <h1 class="mt-5 mb-3">{{ __('views.task_status.index.header') }}</h1>
+    <div class="table-responsive">
+        @auth
+            <x-link name="{{ __('views.task_status.index.new') }}" route="{{ route('task_statuses.create') }}" class="btn btn-primary text-uppercase"/>
+        @endauth
+        <div class="container">
             <table class="table mt-2">
                 <tr>
                     <th>{{__('views.task_status.index.name')}}</th>
@@ -29,8 +28,9 @@
                         </td>
                     </tr>
                 @endforeach
-                {{ $statuses->links() }}
             </table>
         </div>
+        {{ $statuses->links() }}
     </div>
+</div>
 @endsection

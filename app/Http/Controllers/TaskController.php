@@ -31,7 +31,6 @@ class TaskController extends Controller
                 AllowedFilter::exact('created_by_id'),
                 AllowedFilter::exact('assigned_to_id'),
                 AllowedFilter::exact('status_id'),
-                AllowedFilter::exact('label_id')
             ])
             ->orderBy('created_at', 'desc')
             ->paginate(self::PAGINATE_COUNT);
