@@ -6,8 +6,8 @@
         <p class="lead">{{ $task->description }}</p>
         @auth
             {{ Form::open(['url' => route('tasks.comments.store', $task)]) }}
-                <x-form-required-text-aria-field label="{{ __('views.task.show.comment') }}" name="content" message="{{ $message ?? '' }}" class="form-control w-50"/>
-                <x-form-submit-button name="{{ __('views.task.show.create') }}" class="btn btn-primary px-5 text-uppercase"/>
+                <x-form.required-text-aria-field label="{{ __('views.task.show.comment') }}" name="content" message="{{ $message ?? '' }}" class="form-control w-50"/>
+                <x-form.submit-button name="{{ __('views.task.show.create') }}" class="btn btn-primary px-5 text-uppercase"/>
             {{ Form::close() }}
         @endauth
         <hr>

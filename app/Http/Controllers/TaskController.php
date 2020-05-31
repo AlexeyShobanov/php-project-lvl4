@@ -70,7 +70,6 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
-        //$comments = Comment::get()->sortByDesc('id');
         $comments = $task->comments()
             ->orderBy('created_at', 'desc')
             ->paginate(self::PAGINATE_COUNT);

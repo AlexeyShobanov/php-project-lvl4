@@ -1,10 +1,10 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Form;
 
 use Illuminate\View\Component;
 
-class FormTextAriaField extends Component
+class TextAriaField extends Component
 {
     public $name;
     public $label;
@@ -19,6 +19,6 @@ class FormTextAriaField extends Component
 
     public function render()
     {
-        return view('components.form-text-aria-field');
+        return view('components.form.text-aria-field');
     }
 }

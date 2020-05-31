@@ -1,10 +1,10 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Form;
 
 use Illuminate\View\Component;
 
-class FormRequiredTextAriaField extends Component
+class RequiredTextAriaField extends Component
 {
     public $name;
     public $message;
@@ -21,6 +21,6 @@ class FormRequiredTextAriaField extends Component
 
     public function render()
     {
-        return view('components.form-required-text-aria-field');
+        return view('components.form.required-text-aria-field');
     }
 }

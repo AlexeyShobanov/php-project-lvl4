@@ -11,15 +11,10 @@ use App\Policies\TaskPolicy;
 use App\Label;
 use App\Policies\LabelPolicy;
 use App\Task\Comment;
-use App\Policies\CommentPolicy;
+use App\Policies\Task\CommentPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    /**
-     * The policy mappings for the application.
-     *
-     * @var array
-     */
     protected $policies = [
         TaskStatus::class => TaskStatusPolicy::class,
         Task::class => TaskPolicy::class,
@@ -27,11 +22,6 @@ class AuthServiceProvider extends ServiceProvider
         Comment::class => CommentPolicy::class,
     ];
 
-    /**
-     * Register any authentication / authorization services.
-     *
-     * @return void
-     */
     public function boot()
     {
         $this->registerPolicies();

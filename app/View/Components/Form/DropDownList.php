@@ -1,16 +1,17 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Form;
 
 use Illuminate\View\Component;
 
-class FormDropDownMultiList extends Component
+class DropDownList extends Component
 {
     public $name;
     public $label;
     public $dataList;
     public $placeholder;
     public $value;
+
 
     public function __construct($name, $label, $dataList, $placeholder, $value = null)
     {
@@ -23,6 +24,6 @@ class FormDropDownMultiList extends Component
 
     public function render()
     {
-        return view('components.form-drop-down-multi-list');
+        return view('components.form.drop-down-list');
     }
 }

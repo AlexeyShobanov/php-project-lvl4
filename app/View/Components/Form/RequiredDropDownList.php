@@ -1,10 +1,10 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Form;
 
 use Illuminate\View\Component;
 
-class FormRequiredDropDownList extends Component
+class RequiredDropDownList extends Component
 {
     public $name;
     public $label;
@@ -26,6 +26,6 @@ class FormRequiredDropDownList extends Component
 
     public function render()
     {
-        return view('components.form-required-drop-down-list');
+        return view('components.form.required-drop-down-list');
     }
 }

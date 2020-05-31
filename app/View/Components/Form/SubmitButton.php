@@ -1,10 +1,10 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Form;
 
 use Illuminate\View\Component;
 
-class FormSubmitButton extends Component
+class SubmitButton extends Component
 {
     public $name;
 
@@ -15,6 +15,6 @@ class FormSubmitButton extends Component
 
     public function render()
     {
-        return view('components.form-submit-button');
+        return view('components.form.submit-button');
     }
 }

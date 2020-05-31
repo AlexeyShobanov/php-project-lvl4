@@ -44,8 +44,7 @@ class TaskStatusController extends Controller
     public function edit(TaskStatus $taskStatus)
     {
         $this->authorize($taskStatus);
-        $status = TaskStatus::findOrFail($taskStatus->id);
-        return view('task_status.edit', compact('status'));
+        return view('task_status.edit', ['status' => $taskStatus]);
     }
 
     public function update(Request $request, TaskStatus $taskStatus)

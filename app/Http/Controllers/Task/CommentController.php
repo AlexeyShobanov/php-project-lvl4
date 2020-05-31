@@ -31,7 +31,6 @@ class CommentController extends Controller
     public function edit(Task $task, Comment $comment)
     {
         $this->authorize($comment);
-        $status = TaskStatus::findOrFail($comment->id);
         return view('comment.edit', compact('comment', 'task'));
     }
 
