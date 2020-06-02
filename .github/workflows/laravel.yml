@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v1
     
     - name: PHP Security Checker
       uses: StephaneBour/actions-php-security-checker@1.0
@@ -23,24 +23,7 @@ jobs:
     - name: Check lint
       run: make lint
 
-    - name: Test
-      run: make test
-
-  coverage:
-
-    needs: [ laravel-tests ]
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    
-    - name: PHP Security Checker
-      uses: StephaneBour/actions-php-security-checker@1.0
-
-    - name: Setup project
-      run: make setup
-
-    - name: Make & Publish code coverage
+    - name: Test & Coverage
       uses: paambaati/codeclimate-action@v2.5.7
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
