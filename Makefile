@@ -20,7 +20,7 @@ test:
 	php artisan test
 
 coverage:
-	./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
+	php artisan test --coverage-clover ./build/logs/clover.xml
 
 deploy:
 	git push heroku
